@@ -5,33 +5,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('uploadForm');
     const achievementsGrid = document.getElementById('achievementsGrid');
 
-    // Default dummy data
-    const defaultAchievements = [
-        {
-            id: 1,
-            title: 'Elden Lord',
-            game: 'Elden Ring',
-            description: 'You have claimed the Elden Ring and become the Elden Lord. A true testament to your perseverance.',
-            image: 'https://images.unsplash.com/photo-1605901309584-818e25960b8f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-            date: 'May 18, 2026'
-        },
-        {
-            id: 2,
-            title: 'Master of the Hunt',
-            game: 'The Witcher 3',
-            description: 'Defeated all the legendary beasts and collected every trophy across the Northern Realms.',
-            image: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-            date: 'May 10, 2026'
-        },
-        {
-            id: 3,
-            title: 'Flawless Victory',
-            game: 'Mortal Kombat 1',
-            description: 'Won 50 online ranked matches in a row without losing a single round.',
-            image: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-            date: 'Apr 22, 2026'
-        }
-    ];
+    // Default empty data
+    const defaultAchievements = [];
 
     // Load from localStorage or use defaults
     let achievements = JSON.parse(localStorage.getItem('flexroom_achievements'));
@@ -79,18 +54,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initial render
     const renderAchievements = () => {
-        achievementsGrid.innerHTML = `
-            <div class="achievement-card glass add-card animate-fade-in" id="openModalCard">
-                <div class="plus-sign">+</div>
-            </div>
-        `;
-        achievements.forEach(ach => {
+        achievementsGrid.innerHTML = '';
+        
+        // Ensure we only have max 3 achievements
+        const displayAchievements = achievements.slice(0, 3);
+        
+        // Render achievements
+        displayAchievements.forEach(ach => {
             achievementsGrid.insertAdjacentHTML('beforeend', createCardHTML(ach));
         });
 
-        // Reattach event listener for the new add card
-        document.getElementById('openModalCard').addEventListener('click', () => {
-            modal.style.display = 'flex';
+        // Render empty slots to make total exactly 3
+        const emptySlots = 3 - displayAchievements.length;
+        for (let i = 0; i < emptySlots; i++) {
+            achievementsGrid.insertAdjacentHTML('beforeend', `
+                <div class="achievement-card glass add-card animate-fade-in open-modal-card">
+                    <div class="plus-sign">+</div>
+                </div>
+            `);
+        }
+
+        // Reattach event listeners for ALL the new add cards
+        document.querySelectorAll('.open-modal-card').forEach(card => {
+            card.addEventListener('click', () => {
+                modal.style.display = 'flex';
+            });
         });
     };
 
@@ -130,6 +118,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Prepend to array
         achievements.unshift(newAchievement);
+        
+        // Ensure max 3
+        if (achievements.length > 3) {
+            achievements = achievements.slice(0, 3);
+        }
         
         // Save to localStorage
         localStorage.setItem('flexroom_achievements', JSON.stringify(achievements));
