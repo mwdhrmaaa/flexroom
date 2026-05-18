@@ -1,0 +1,11 @@
+# Local shell scripts
+*.sh
+
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# Node dependencies (just in case)
+node_modules/
+package-lock.json
+
