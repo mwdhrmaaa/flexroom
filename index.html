@@ -75,6 +75,32 @@
                 </form>
             </div>
         </div>
+
+        <div class="modal-overlay" id="shareModal" style="display: none;">
+            <div class="modal-content glass share-modal-content">
+                <button class="close-btn" id="closeShareModalBtn" aria-label="Close modal">&times;</button>
+                <h2 class="modal-title text-gradient">Share Collectible Card</h2>
+                
+                <div class="share-preview-container">
+                    <div id="shareLoader" class="share-loader">
+                        <div class="spinner"></div>
+                        <p>Forging your exclusive digital trophy...</p>
+                    </div>
+                    <img id="shareCardPreview" src="" alt="Share Card Preview" class="share-card-preview" style="display: none;" />
+                </div>
+                
+                <div class="share-actions">
+                    <a id="downloadShareCardBtn" class="btn btn-primary download-btn" href="#" download="flexroom-trophy.png">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        Download Exclusive PNG
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
     
     <script src="js/main.js"></script>

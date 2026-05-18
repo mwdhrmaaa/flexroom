@@ -38,8 +38,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 <img src="${achievement.image}" alt="${achievement.title}" class="card-image" onerror="this.onerror=null; this.src='https://via.placeholder.com/800x400?text=Image+Not+Found'" />
             </div>` : '';
 
-        const shareBtnHTML = achievement.image ? `
-            <button class="btn btn-outline share-btn" onclick="alert('Share link copied to clipboard!')">
+        const shareBtnHTML = `
+            <button class="btn btn-outline share-btn" data-id="${achievement.id}">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="18" cy="5" r="3"></circle>
                     <circle cx="6" cy="12" r="3"></circle>
@@ -48,7 +48,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
                 </svg>
                 Share
-            </button>` : '';
+            </button>
+        `;
 
         const deleteBtnHTML = `
             <button class="btn btn-outline delete-btn" data-id="${achievement.id}">
@@ -117,6 +118,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 deleteAchievement(id);
             });
         });
+
+        // Reattach event listeners for share buttons
+        document.querySelectorAll('.share-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const id = parseInt(btn.getAttribute('data-id'));
+                const ach = achievements.find(a => a.id === id);
+                if (ach) {
+                    openShareModal(ach);
+                }
+            });
+        });
     };
 
     // Delete an achievement
@@ -125,6 +138,228 @@ document.addEventListener('DOMContentLoaded', () => {
             achievements = achievements.filter(ach => ach.id !== id);
             localStorage.setItem('flexroom_achievements', JSON.stringify(achievements));
             renderAchievements();
+        }
+    };
+
+    // Share modal variables
+    const shareModal = document.getElementById('shareModal');
+    const closeShareModalBtn = document.getElementById('closeShareModalBtn');
+    const shareLoader = document.getElementById('shareLoader');
+    const shareCardPreview = document.getElementById('shareCardPreview');
+    const downloadShareCardBtn = document.getElementById('downloadShareCardBtn');
+
+    // Close Share Modal
+    if (closeShareModalBtn) {
+        closeShareModalBtn.addEventListener('click', () => {
+            shareModal.style.display = 'none';
+        });
+    }
+
+    const openShareModal = (ach) => {
+        shareModal.style.display = 'flex';
+        shareLoader.style.display = 'flex';
+        shareCardPreview.style.display = 'none';
+        downloadShareCardBtn.style.opacity = '0.5';
+        downloadShareCardBtn.style.pointerEvents = 'none';
+
+        // Draw and export
+        generateShareCard(ach, (dataUrl) => {
+            shareCardPreview.src = dataUrl;
+            downloadShareCardBtn.href = dataUrl;
+            downloadShareCardBtn.download = `flexroom-trophy-${ach.title.toLowerCase().replace(/\s+/g, '-')}.png`;
+            
+            shareLoader.style.display = 'none';
+            shareCardPreview.style.display = 'flex';
+            downloadShareCardBtn.style.opacity = '1';
+            downloadShareCardBtn.style.pointerEvents = 'auto';
+        });
+    };
+
+    const generateShareCard = (ach, callback) => {
+        const canvas = document.createElement('canvas');
+        canvas.width = 800;
+        canvas.height = 1000;
+        const ctx = canvas.getContext('2d');
+
+        // 1. Draw solid dark background
+        ctx.fillStyle = '#0a0a0f';
+        ctx.fillRect(0, 0, 800, 1000);
+
+        // 2. Draw ambient radial glow
+        const glow = ctx.createRadialGradient(400, 300, 100, 400, 500, 600);
+        glow.addColorStop(0, 'rgba(157, 0, 255, 0.15)'); // Purple glow
+        glow.addColorStop(0.5, 'rgba(0, 243, 255, 0.08)'); // Cyan glow
+        glow.addColorStop(1, 'rgba(0, 0, 0, 0)');
+        ctx.fillStyle = glow;
+        ctx.fillRect(0, 0, 800, 1000);
+
+        // 3. Draw dual elegant border
+        // Outer cyan border
+        ctx.strokeStyle = '#00f3ff';
+        ctx.lineWidth = 4;
+        ctx.strokeRect(20, 20, 760, 960);
+        
+        // Inner purple border
+        ctx.strokeStyle = '#9d00ff';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(26, 26, 748, 948);
+
+        // 4. Header branding
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        
+        // Brand Title
+        ctx.font = '800 32px "Outfit", sans-serif';
+        ctx.fillStyle = '#ffffff';
+        // Add neon shadow for brand
+        ctx.shadowColor = '#00f3ff';
+        ctx.shadowBlur = 10;
+        ctx.fillText('FLEXROOM', 400, 70);
+        ctx.shadowBlur = 0; // Reset shadow
+
+        // Subtitle
+        ctx.font = '600 14px "Outfit", sans-serif';
+        ctx.fillStyle = '#a0a0b0';
+        ctx.fillText('LEGACY DIGITAL TROPHY', 400, 105);
+
+        // Decorative horizontal line
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(100, 130);
+        ctx.lineTo(700, 130);
+        ctx.stroke();
+
+        // 5. Draw screenshot frame
+        const frameX = 50;
+        const frameY = 160;
+        const frameW = 700;
+        const frameH = 430;
+
+        // Draw frame background (glassy container)
+        ctx.fillStyle = 'rgba(18, 18, 26, 0.6)';
+        ctx.fillRect(frameX, frameY, frameW, frameH);
+        
+        // Draw frame border
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(frameX, frameY, frameW, frameH);
+
+        // Render screenshot
+        const renderTextAndFooter = () => {
+            // Game title
+            ctx.textAlign = 'left';
+            ctx.fillStyle = '#00f3ff';
+            ctx.font = '800 24px "Outfit", sans-serif';
+            ctx.fillText(ach.game.toUpperCase(), 60, 640);
+
+            // Date
+            ctx.textAlign = 'right';
+            ctx.fillStyle = '#a0a0b0';
+            ctx.font = '500 16px "Inter", sans-serif';
+            ctx.fillText(ach.date, 740, 640);
+
+            // Achievement Title
+            ctx.textAlign = 'left';
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '800 48px "Outfit", sans-serif';
+            ctx.fillText(ach.title, 60, 705);
+
+            // Description
+            ctx.fillStyle = '#a0a0b0';
+            ctx.font = '400 20px "Inter", sans-serif';
+            
+            // Wrap text helper
+            const wrapText = (text, x, y, maxWidth, lineHeight) => {
+                const words = text.split(' ');
+                let line = '';
+                let currentY = y;
+                for (let n = 0; n < words.length; n++) {
+                    let testLine = line + words[n] + ' ';
+                    let metrics = ctx.measureText(testLine);
+                    let testWidth = metrics.width;
+                    if (testWidth > maxWidth && n > 0) {
+                        ctx.fillText(line, x, currentY);
+                        line = words[n] + ' ';
+                        currentY += lineHeight;
+                    } else {
+                        line = testLine;
+                    }
+                }
+                ctx.fillText(line, x, currentY);
+            };
+
+            wrapText(ach.description, 60, 770, 680, 28);
+
+            // Decorative separator
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(50, 890);
+            ctx.lineTo(750, 890);
+            ctx.stroke();
+
+            // Footer branding
+            ctx.textAlign = 'center';
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+            ctx.font = '600 14px "Outfit", sans-serif';
+            ctx.fillText('VERIFIED VIA FLEXROOM COLLECTIBLE SYSTEM', 400, 930);
+            
+            ctx.fillStyle = 'rgba(0, 243, 255, 0.4)';
+            ctx.font = '500 12px "Inter", sans-serif';
+            ctx.fillText('flexroom.github.io', 400, 955);
+
+            // Trigger callback with base64 url
+            callback(canvas.toDataURL('image/png'));
+        };
+
+        if (ach.image) {
+            const img = new Image();
+            img.onload = () => {
+                // Draw image with object-fit: contain inside the frame
+                const imgRatio = img.width / img.height;
+                const frameRatio = frameW / frameH;
+                
+                let drawW = frameW;
+                let drawH = frameH;
+                let drawX = frameX;
+                let drawY = frameY;
+
+                if (imgRatio > frameRatio) {
+                    drawH = frameW / imgRatio;
+                    drawY = frameY + (frameH - drawH) / 2;
+                } else {
+                    drawW = frameH * imgRatio;
+                    drawX = frameX + (frameW - drawW) / 2;
+                }
+
+                ctx.drawImage(img, drawX, drawY, drawW, drawH);
+                renderTextAndFooter();
+            };
+            img.onerror = () => {
+                // Draw placeholder if image fails to load
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.03)';
+                ctx.fillRect(frameX, frameY, frameW, frameH);
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+                ctx.strokeRect(frameX, frameY, frameW, frameH);
+                
+                ctx.textAlign = 'center';
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.15)';
+                ctx.font = '500 18px "Inter", sans-serif';
+                ctx.fillText('Trophy Screenshot', 400, 375);
+                renderTextAndFooter();
+            };
+            img.src = ach.image;
+        } else {
+            // Draw placeholder trophy icon if no image
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.02)';
+            ctx.fillRect(frameX, frameY, frameW, frameH);
+            
+            ctx.textAlign = 'center';
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+            ctx.font = '500 18px "Inter", sans-serif';
+            ctx.fillText('Trophy Screenshot Placeholder', 400, 375);
+            renderTextAndFooter();
         }
     };
 
