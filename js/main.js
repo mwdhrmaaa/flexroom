@@ -128,6 +128,111 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    // File Upload Elements
+    const fileInput = document.getElementById('imageFile');
+    const dropzone = document.getElementById('uploadDropzone');
+    const uploadPlaceholder = document.getElementById('uploadPlaceholder');
+    const uploadPreview = document.getElementById('uploadPreview');
+    const previewImg = document.getElementById('previewImg');
+    const removePreviewBtn = document.getElementById('removePreviewBtn');
+    const imageHiddenInput = document.getElementById('image');
+
+    // Trigger file click when clicking dropzone
+    if (dropzone) {
+        dropzone.addEventListener('click', (e) => {
+            if (e.target !== removePreviewBtn) {
+                fileInput.click();
+            }
+        });
+
+        // Drag & drop support
+        dropzone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropzone.classList.add('dragover');
+        });
+
+        dropzone.addEventListener('dragleave', () => {
+            dropzone.classList.remove('dragover');
+        });
+
+        dropzone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropzone.classList.remove('dragover');
+            if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+                handleFile(e.dataTransfer.files[0]);
+            }
+        });
+    }
+
+    if (fileInput) {
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files && e.target.files[0]) {
+                handleFile(e.target.files[0]);
+            }
+        });
+    }
+
+    if (removePreviewBtn) {
+        removePreviewBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            resetUpload();
+        });
+    }
+
+    // Helper to handle and compress the file
+    const handleFile = (file) => {
+        if (!file.type.startsWith('image/')) {
+            alert('Please select an image file.');
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const img = new Image();
+            img.onload = () => {
+                // Compress image using canvas
+                const canvas = document.createElement('canvas');
+                let width = img.width;
+                let height = img.height;
+                const maxDim = 800; // Premium compression dimension
+
+                if (width > maxDim || height > maxDim) {
+                    if (width > height) {
+                        height = Math.round((height * maxDim) / width);
+                        width = maxDim;
+                    } else {
+                        width = Math.round((width * maxDim) / height);
+                        height = maxDim;
+                    }
+                }
+
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
+
+                // Convert to compressed jpeg data URL (0.7 quality)
+                const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.7);
+                
+                // Set input value and preview
+                imageHiddenInput.value = compressedDataUrl;
+                previewImg.src = compressedDataUrl;
+                uploadPlaceholder.style.display = 'none';
+                uploadPreview.style.display = 'flex';
+            };
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    };
+
+    const resetUpload = () => {
+        if (fileInput) fileInput.value = '';
+        if (imageHiddenInput) imageHiddenInput.value = '';
+        if (previewImg) previewImg.src = '';
+        if (uploadPlaceholder) uploadPlaceholder.style.display = 'flex';
+        if (uploadPreview) uploadPreview.style.display = 'none';
+    };
+
     renderAchievements();
 
     // Open Modal fallback if openBtn exists (we removed it from header but keeping logic just in case)
@@ -173,6 +278,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Reset and close
         form.reset();
+        resetUpload();
         modal.style.display = 'none';
     });
 });

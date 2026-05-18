@@ -49,8 +49,23 @@
                         <input type="text" id="title" name="title" required placeholder="e.g. Elden Lord" />
                     </div>
                     <div class="form-group">
-                        <label for="image">Image URL (Optional)</label>
-                        <input type="url" id="image" name="image" placeholder="https://example.com/image.jpg" />
+                        <label>Achievement Screenshot</label>
+                        <div class="file-upload-wrapper glass" id="uploadDropzone">
+                            <input type="file" id="imageFile" accept="image/*" class="file-input" style="display: none;" />
+                            <div class="upload-placeholder" id="uploadPlaceholder">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="upload-icon">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="17 8 12 3 7 8"></polyline>
+                                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                                </svg>
+                                <span>Choose from Gallery / Drag Screenshot here</span>
+                            </div>
+                            <div class="upload-preview" id="uploadPreview" style="display: none;">
+                                <img id="previewImg" src="" alt="Preview" />
+                                <button type="button" class="remove-preview-btn" id="removePreviewBtn" aria-label="Remove image">&times;</button>
+                            </div>
+                        </div>
+                        <input type="hidden" id="image" name="image" />
                     </div>
                     <div class="form-group">
                         <label for="description">Description</label>
