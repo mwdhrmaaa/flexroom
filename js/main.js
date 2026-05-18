@@ -90,12 +90,17 @@ document.addEventListener('DOMContentLoaded', () => {
             achievementsGrid.insertAdjacentHTML('beforeend', createCardHTML(ach));
         });
 
-        // Always render one add card at the end
-        achievementsGrid.insertAdjacentHTML('beforeend', `
-            <div class="achievement-card glass add-card animate-fade-in open-modal-card">
-                <div class="plus-sign">+</div>
-            </div>
-        `);
+        // Calculate empty slots needed:
+        // - If less than 3 achievements, pad up to 3 boxes total.
+        // - If 3 or more achievements, always append exactly 1 new empty box.
+        const emptySlots = achievements.length < 3 ? 3 - achievements.length : 1;
+        for (let i = 0; i < emptySlots; i++) {
+            achievementsGrid.insertAdjacentHTML('beforeend', `
+                <div class="achievement-card glass add-card animate-fade-in open-modal-card">
+                    <div class="plus-sign">+</div>
+                </div>
+            `);
+        }
 
         // Reattach event listeners for ALL the new add cards
         document.querySelectorAll('.open-modal-card').forEach(card => {
