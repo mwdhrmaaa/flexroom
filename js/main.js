@@ -8,18 +8,28 @@ document.addEventListener('DOMContentLoaded', () => {
     // Default empty data
     const defaultAchievements = [];
 
-    // Load from localStorage or use defaults
-    let achievements = JSON.parse(localStorage.getItem('flexroom_achievements'));
-    if (!achievements) {
-        achievements = defaultAchievements;
-        localStorage.setItem('flexroom_achievements', JSON.stringify(achievements));
+    // Load from localStorage safely
+    let achievements = [];
+    try {
+        const stored = localStorage.getItem('flexroom_achievements');
+        if (stored) {
+            achievements = JSON.parse(stored);
+            if (!Array.isArray(achievements)) {
+                achievements = [];
+            }
+        } else {
+            localStorage.setItem('flexroom_achievements', JSON.stringify([]));
+        }
+    } catch (e) {
+        console.error('Error accessing localStorage:', e);
+        achievements = [];
     }
 
     // Render a single card HTML
     const createCardHTML = (achievement) => {
         const imageHTML = achievement.image ? `
             <div class="card-image-container">
-                <img src="${achievement.image}" alt="${achievement.title}" class="card-image" onerror="this.src='https://via.placeholder.com/800x400?text=Image+Not+Found'" />
+                <img src="${achievement.image}" alt="${achievement.title}" class="card-image" onerror="this.onerror=null; this.src='https://via.placeholder.com/800x400?text=Image+Not+Found'" />
             </div>` : '';
 
         const shareBtnHTML = achievement.image ? `
