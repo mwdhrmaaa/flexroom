@@ -66,23 +66,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const renderAchievements = () => {
         achievementsGrid.innerHTML = '';
         
-        // Ensure we only have max 3 achievements
-        const displayAchievements = achievements.slice(0, 3);
-        
         // Render achievements
-        displayAchievements.forEach(ach => {
+        achievements.forEach(ach => {
             achievementsGrid.insertAdjacentHTML('beforeend', createCardHTML(ach));
         });
 
-        // Render empty slots to make total exactly 3
-        const emptySlots = 3 - displayAchievements.length;
-        for (let i = 0; i < emptySlots; i++) {
-            achievementsGrid.insertAdjacentHTML('beforeend', `
-                <div class="achievement-card glass add-card animate-fade-in open-modal-card">
-                    <div class="plus-sign">+</div>
-                </div>
-            `);
-        }
+        // Always render one add card at the end
+        achievementsGrid.insertAdjacentHTML('beforeend', `
+            <div class="achievement-card glass add-card animate-fade-in open-modal-card">
+                <div class="plus-sign">+</div>
+            </div>
+        `);
 
         // Reattach event listeners for ALL the new add cards
         document.querySelectorAll('.open-modal-card').forEach(card => {
@@ -128,11 +122,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Prepend to array
         achievements.unshift(newAchievement);
-        
-        // Ensure max 3
-        if (achievements.length > 3) {
-            achievements = achievements.slice(0, 3);
-        }
         
         // Save to localStorage
         localStorage.setItem('flexroom_achievements', JSON.stringify(achievements));
