@@ -8,6 +8,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Default empty data
     const defaultAchievements = [];
 
+    // One-time clear of old mock achievements to start completely fresh
+    if (!localStorage.getItem('flexroom_fresh_start_v1')) {
+        localStorage.removeItem('flexroom_achievements');
+        localStorage.setItem('flexroom_fresh_start_v1', 'true');
+    }
+
     // Load from localStorage safely
     let achievements = [];
     try {
@@ -44,6 +50,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 Share
             </button>` : '';
 
+        const deleteBtnHTML = `
+            <button class="btn btn-outline delete-btn" data-id="${achievement.id}">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="3 6 5 6 21 6"></polyline>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    <line x1="10" y1="11" x2="10" y2="17"></line>
+                    <line x1="14" y1="11" x2="14" y2="17"></line>
+                </svg>
+                Delete
+            </button>
+        `;
+
         return `
         <div class="achievement-card glass animate-fade-in" data-id="${achievement.id}">
             ${imageHTML}
@@ -56,6 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <p class="description">${achievement.description}</p>
                 <div class="card-actions">
                     ${shareBtnHTML}
+                    ${deleteBtnHTML}
                 </div>
             </div>
         </div>
@@ -84,6 +103,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 modal.style.display = 'flex';
             });
         });
+
+        // Reattach event listeners for delete buttons
+        document.querySelectorAll('.delete-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const id = parseInt(btn.getAttribute('data-id'));
+                deleteAchievement(id);
+            });
+        });
+    };
+
+    // Delete an achievement
+    const deleteAchievement = (id) => {
+        if (confirm('Are you sure you want to delete this achievement?')) {
+            achievements = achievements.filter(ach => ach.id !== id);
+            localStorage.setItem('flexroom_achievements', JSON.stringify(achievements));
+            renderAchievements();
+        }
     };
 
     renderAchievements();
