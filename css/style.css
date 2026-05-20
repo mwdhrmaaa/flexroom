@@ -625,8 +625,41 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Share Preview Modal */
 .share-modal-content {
-  max-width: 480px;
-  padding: 20px; /* Reduced from 24px */
+  max-width: 760px;
+  width: 90%;
+  padding: 24px;
+}
+
+.share-modal-body {
+  display: flex;
+  gap: 24px;
+  width: 100%;
+}
+
+.share-sidebar {
+  flex: 0 0 180px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-right: 1px solid var(--glass-border);
+  padding-right: 20px;
+}
+
+.sidebar-title {
+  font-family: var(--font-heading);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+.share-main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .share-preview-container {
@@ -690,33 +723,21 @@ h1, h2, h3, h4, h5, h6 {
   text-decoration: none;
 }
 
-/* Share style selector */
-.share-style-selector {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-bottom: 20px;
-  width: 100%;
-}
-
-.selector-label {
-  font-family: var(--font-heading);
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
+/* Style selector */
 .style-options {
   display: flex;
   gap: 8px;
   width: 100%;
 }
 
+.style-options.vertical {
+  flex-direction: column;
+  gap: 10px;
+}
+
 .style-opt-btn {
-  flex: 1;
-  padding: 10px;
+  width: 100%;
+  padding: 12px 14px;
   border-radius: 8px;
   background: rgba(0, 0, 0, 0.2);
   border: 1px solid var(--glass-border);
@@ -725,7 +746,11 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  text-align: left;
 }
 
 .style-opt-btn:hover {
@@ -738,4 +763,41 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--bg-primary);
   border-color: var(--accent-lime);
   box-shadow: 0 4px 12px rgba(213, 255, 64, 0.15);
+}
+
+.opt-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transition: all 0.3s;
+}
+
+.style-opt-btn.active .opt-indicator {
+  background: var(--bg-primary);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+}
+
+@media (max-width: 600px) {
+  .share-modal-content {
+    max-width: 480px;
+  }
+  .share-modal-body {
+    flex-direction: column;
+    gap: 16px;
+  }
+  .share-sidebar {
+    flex: none;
+    border-right: none;
+    border-bottom: 1px solid var(--glass-border);
+    padding-right: 0;
+    padding-bottom: 16px;
+  }
+  .style-options.vertical {
+    flex-direction: row;
+  }
+  .style-opt-btn {
+    flex: 1;
+    justify-content: center;
+  }
 }
