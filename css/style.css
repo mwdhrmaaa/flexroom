@@ -593,11 +593,11 @@ h1, h2, h3, h4, h5, h6 {
 .share-preview-container {
   width: 100%;
   aspect-ratio: 4 / 5;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(3, 14, 47, 0.4);
   border-radius: 12px;
   border: 1px solid var(--glass-border);
   overflow: hidden;
-  margin-bottom: 16px; /* Reduced from 24px */
+  margin-bottom: 16px; 
   display: flex;
   align-items: center;
   justify-content: center;
