@@ -167,7 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
         generateShareCard(ach, (dataUrl) => {
             shareCardPreview.src = dataUrl;
             downloadShareCardBtn.href = dataUrl;
-            downloadShareCardBtn.download = `flexroom-trophy-${ach.title.toLowerCase().replace(/\s+/g, '-')}.png`;
+            downloadShareCardBtn.download = `flexcard-${ach.title.toLowerCase().replace(/\s+/g, '-')}.png`;
             
             shareLoader.style.display = 'none';
             shareCardPreview.style.display = 'flex';
@@ -215,7 +215,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Add neon shadow for brand
         ctx.shadowColor = '#d5ff40';
         ctx.shadowBlur = 10;
-        ctx.fillText('FLEXROOM', 400, 70);
+        ctx.fillText('FLEXCARD', 400, 70);
         ctx.shadowBlur = 0; // Reset shadow
 
         // Subtitle
