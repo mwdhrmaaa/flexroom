@@ -353,70 +353,66 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
-            // Screenshot frame
+            // Screenshot frame maximum bounds
             const frameX = 50;
             const frameY = 180;
             const frameW = 700;
             const frameH = 430;
 
-            // Draw frame background
-            ctx.fillStyle = '#1b1e15';
-            ctx.fillRect(frameX, frameY, frameW, frameH);
-
-            // Sharp border
-            ctx.strokeStyle = '#d5ff40';
-            ctx.lineWidth = 2;
-            ctx.strokeRect(frameX, frameY, frameW, frameH);
-
-            // Brutalist corner target brackets (hiasan)
-            ctx.strokeStyle = '#d5ff40';
-            ctx.lineWidth = 2;
-            const bSize = 15;
-            // Top-left
-            ctx.beginPath(); ctx.moveTo(frameX - 6, frameY - 6 + bSize); ctx.lineTo(frameX - 6, frameY - 6); ctx.lineTo(frameX - 6 + bSize, frameY - 6); ctx.stroke();
-            // Top-right
-            ctx.beginPath(); ctx.moveTo(frameX + frameW + 6 - bSize, frameY - 6); ctx.lineTo(frameX + frameW + 6, frameY - 6); ctx.lineTo(frameX + frameW + 6, frameY - 6 + bSize); ctx.stroke();
-            // Bottom-left
-            ctx.beginPath(); ctx.moveTo(frameX - 6, frameY + frameH + 6 - bSize); ctx.lineTo(frameX - 6, frameY + frameH + 6); ctx.lineTo(frameX - 6 + bSize, frameY + frameH + 6); ctx.stroke();
-            // Bottom-right
-            ctx.beginPath(); ctx.moveTo(frameX + frameW + 6 - bSize, frameY + frameH + 6); ctx.lineTo(frameX + frameW + 6, frameY + frameH + 6); ctx.lineTo(frameX + frameW + 6, frameY + frameH + 6 - bSize); ctx.stroke();
-
-            // Top-right coordinates box
-            ctx.fillStyle = 'rgba(213, 255, 64, 0.15)';
-            ctx.fillRect(frameX + frameW - 140, frameY + 10, 130, 24);
-            ctx.strokeStyle = '#d5ff40';
-            ctx.lineWidth = 1;
-            ctx.strokeRect(frameX + frameW - 140, frameY + 10, 130, 24);
-            
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.fillStyle = '#d5ff40';
-            ctx.font = '700 9px "Courier New", monospace';
-            ctx.fillText('X_36.17 // Y_-86.76', frameX + frameW - 75, frameY + 22);
-
-            const renderBrutalistTextAndFooter = () => {
+            const renderBrutalistTextAndFooter = (fX, fY, fW, fH) => {
                 ctx.textBaseline = 'middle';
+                
+                // Sharp border (exactly around active image container size)
+                ctx.strokeStyle = '#d5ff40';
+                ctx.lineWidth = 2;
+                ctx.strokeRect(fX, fY, fW, fH);
+
+                // Brutalist corner target brackets (exactly around active image container size)
+                ctx.strokeStyle = '#d5ff40';
+                ctx.lineWidth = 2;
+                const bSize = 15;
+                // Top-left
+                ctx.beginPath(); ctx.moveTo(fX - 6, fY - 6 + bSize); ctx.lineTo(fX - 6, fY - 6); ctx.lineTo(fX - 6 + bSize, fY - 6); ctx.stroke();
+                // Top-right
+                ctx.beginPath(); ctx.moveTo(fX + fW + 6 - bSize, fY - 6); ctx.lineTo(fX + fW + 6, fY - 6); ctx.lineTo(fX + fW + 6, fY - 6 + bSize); ctx.stroke();
+                // Bottom-left
+                ctx.beginPath(); ctx.moveTo(fX - 6, fY + fH + 6 - bSize); ctx.lineTo(fX - 6, fY + fH + 6); ctx.lineTo(fX - 6 + bSize, fY + fH + 6); ctx.stroke();
+                // Bottom-right
+                ctx.beginPath(); ctx.moveTo(fX + fW + 6 - bSize, fY + fH + 6); ctx.lineTo(fX + fW + 6, fY + fH + 6); ctx.lineTo(fX + fW + 6, fY + fH + 6 - bSize); ctx.stroke();
+
+                // Top-right coordinates box
+                ctx.fillStyle = 'rgba(213, 255, 64, 0.15)';
+                ctx.fillRect(fX + fW - 140, fY + 10, 130, 24);
+                ctx.strokeStyle = '#d5ff40';
+                ctx.lineWidth = 1;
+                ctx.strokeRect(fX + fW - 140, fY + 10, 130, 24);
+                
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillStyle = '#d5ff40';
+                ctx.font = '700 9px "Courier New", monospace';
+                ctx.fillText('X_36.17 // Y_-86.76', fX + fW - 75, fY + 22);
                 
                 // Screenshot frame HUD overlay texts (drawn on top of the screenshot image)
                 ctx.textAlign = 'left';
                 ctx.fillStyle = '#d5ff40';
                 ctx.font = '700 9px "Courier New", monospace';
-                ctx.fillText('REC [●]  C_SYS_01 // 60FPS', frameX + 15, frameY + 22);
-                ctx.fillText('FOV_90 // OPT_LENS_50MM', frameX + 15, frameY + frameH - 18);
+                ctx.fillText('REC [●]  C_SYS_01 // 60FPS', fX + 15, fY + 22);
+                ctx.fillText('FOV_90 // OPT_LENS_50MM', fX + 15, fY + fH - 18);
                 ctx.textAlign = 'right';
-                ctx.fillText('P_LAT: 14MS // STB_LVL_0.98', frameX + frameW - 15, frameY + frameH - 18);
+                ctx.fillText('P_LAT: 14MS // STB_LVL_0.98', fX + fW - 15, fY + fH - 18);
 
                 // Center crosshair inside screenshot frame
                 ctx.strokeStyle = 'rgba(213, 255, 64, 0.45)';
                 ctx.lineWidth = 1;
                 ctx.beginPath();
-                ctx.arc(frameX + frameW/2, frameY + frameH/2, 10, 0, Math.PI * 2);
+                ctx.arc(fX + fW/2, fY + fH/2, 10, 0, Math.PI * 2);
                 ctx.stroke();
                 ctx.beginPath();
-                ctx.moveTo(frameX + frameW/2 - 18, frameY + frameH/2); ctx.lineTo(frameX + frameW/2 - 4, frameY + frameH/2);
-                ctx.moveTo(frameX + frameW/2 + 4, frameY + frameH/2); ctx.lineTo(frameX + frameW/2 + 18, frameY + frameH/2);
-                ctx.moveTo(frameX + frameW/2, frameY + frameH/2 - 18); ctx.lineTo(frameX + frameW/2, frameY + frameH/2 - 4);
-                ctx.moveTo(frameX + frameW/2, frameY + frameH/2 + 4); ctx.lineTo(frameX + frameW/2, frameY + frameH/2 + 18);
+                ctx.moveTo(fX + fW/2 - 18, fY + fH/2); ctx.lineTo(fX + fW/2 - 4, fY + fH/2);
+                ctx.moveTo(fX + fW/2 + 4, fY + fH/2); ctx.lineTo(fX + fW/2 + 18, fY + fH/2);
+                ctx.moveTo(fX + fW/2, fY + fH/2 - 18); ctx.lineTo(fX + fW/2, fY + fH/2 - 4);
+                ctx.moveTo(fX + fW/2, fY + fH/2 + 4); ctx.lineTo(fX + fW/2, fY + fH/2 + 18);
                 ctx.stroke();
 
                 // Rotated Technical Spec Sidebar Left (hiasan)
@@ -557,19 +553,23 @@ document.addEventListener('DOMContentLoaded', () => {
                         drawX = frameX + (frameW - drawW) / 2;
                     }
 
+                    // Draw frame background exactly fitting image aspect ratio
+                    ctx.fillStyle = '#1b1e15';
+                    ctx.fillRect(drawX, drawY, drawW, drawH);
+
                     ctx.drawImage(img, drawX, drawY, drawW, drawH);
-                    renderBrutalistTextAndFooter();
+                    renderBrutalistTextAndFooter(drawX, drawY, drawW, drawH);
                 };
                 img.onerror = () => {
-                    ctx.fillStyle = 'rgba(255, 255, 255, 0.03)';
+                    ctx.fillStyle = '#1b1e15';
                     ctx.fillRect(frameX, frameY, frameW, frameH);
-                    renderBrutalistTextAndFooter();
+                    renderBrutalistTextAndFooter(frameX, frameY, frameW, frameH);
                 };
                 img.src = ach.image;
             } else {
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.02)';
+                ctx.fillStyle = '#1b1e15';
                 ctx.fillRect(frameX, frameY, frameW, frameH);
-                renderBrutalistTextAndFooter();
+                renderBrutalistTextAndFooter(frameX, frameY, frameW, frameH);
             }
 
         } else if (style === 'neon') {
@@ -719,46 +719,34 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.lineTo(700, 130);
             ctx.stroke();
 
-            // Screenshot frame
+            // Screenshot frame maximum bounds
             const frameX = 50;
             const frameY = 160;
             const frameW = 700;
             const frameH = 430;
 
-            // Draw Crimson backlit aura behind screenshot frame
-            const frameGlow = ctx.createRadialGradient(400, 375, 100, 400, 375, 450);
-            frameGlow.addColorStop(0, 'rgba(255, 30, 30, 0.28)'); // Thick backlight
-            frameGlow.addColorStop(0.5, 'rgba(255, 30, 30, 0.05)');
-            frameGlow.addColorStop(1, 'rgba(0, 0, 0, 0)');
-            ctx.fillStyle = frameGlow;
-            ctx.fillRect(0, 120, 800, 520);
-
-            // Draw frame background
-            ctx.fillStyle = 'rgba(22, 10, 10, 0.65)';
-            ctx.fillRect(frameX, frameY, frameW, frameH);
-            
-            // Draw frame border
-            ctx.strokeStyle = 'rgba(255, 62, 62, 0.18)';
-            ctx.lineWidth = 2;
-            ctx.strokeRect(frameX, frameY, frameW, frameH);
-
-            const renderNeonTextAndFooter = () => {
+            const renderNeonTextAndFooter = (fX, fY, fW, fH) => {
                 ctx.textBaseline = 'middle';
+
+                // Draw frame border (exactly around active image size)
+                ctx.strokeStyle = 'rgba(255, 62, 62, 0.28)';
+                ctx.lineWidth = 2;
+                ctx.strokeRect(fX, fY, fW, fH);
                 
                 // Screenshot frame HUD overlay texts (drawn on top of the screenshot image)
                 ctx.textAlign = 'left';
                 ctx.fillStyle = '#ff8080';
                 ctx.font = '600 9px "Poppins", sans-serif';
-                ctx.fillText('[ SCANNING SOURCE_FILE ]', frameX + 15, frameY + 22);
+                ctx.fillText('[ SCANNING SOURCE_FILE ]', fX + 15, fY + 22);
                 ctx.textAlign = 'right';
-                ctx.fillText('MATRIX_ACTIVE_V.09', frameX + frameW - 15, frameY + 22);
+                ctx.fillText('MATRIX_ACTIVE_V.09', fX + fW - 15, fY + 22);
 
                 // Scanning laser line across the middle of the frame (hiasan)
                 ctx.strokeStyle = 'rgba(255, 62, 62, 0.28)';
                 ctx.lineWidth = 1.5;
                 ctx.beginPath();
-                ctx.moveTo(frameX, frameY + frameH/2 + 25);
-                ctx.lineTo(frameX + frameW, frameY + frameH/2 + 25);
+                ctx.moveTo(fX, fY + fH/2 + 25);
+                ctx.lineTo(fX + fW, fY + fH/2 + 25);
                 ctx.stroke();
 
                 // Corner crosshairs inside the screenshot frame corners (hiasan)
@@ -766,13 +754,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 ctx.lineWidth = 1;
                 const cL = 10;
                 // Top-left
-                ctx.beginPath(); ctx.moveTo(frameX + 10, frameY + 10 + cL); ctx.lineTo(frameX + 10, frameY + 10); ctx.lineTo(frameX + 10 + cL, frameY + 10); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(fX + 10, fY + 10 + cL); ctx.lineTo(fX + 10, fY + 10); ctx.lineTo(fX + 10 + cL, fY + 10); ctx.stroke();
                 // Top-right
-                ctx.beginPath(); ctx.moveTo(frameX + frameW - 10 - cL, frameY + 10); ctx.lineTo(frameX + frameW - 10, frameY + 10); ctx.lineTo(frameX + frameW - 10, frameY + 10 + cL); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(fX + fW - 10 - cL, fY + 10); ctx.lineTo(fX + fW - 10, fY + 10); ctx.lineTo(fX + fW - 10, fY + 10 + cL); ctx.stroke();
                 // Bottom-left
-                ctx.beginPath(); ctx.moveTo(frameX + 10, frameY + frameH - 10 - cL); ctx.lineTo(frameX + 10, frameY + frameH - 10); ctx.lineTo(frameX + 10 + cL, frameY + frameH - 10); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(fX + 10, fY + fH - 10 - cL); ctx.lineTo(fX + 10, fY + fH - 10); ctx.lineTo(fX + 10 + cL, fY + fH - 10); ctx.stroke();
                 // Bottom-right
-                ctx.beginPath(); ctx.moveTo(frameX + frameW - 10 - cL, frameY + frameH - 10); ctx.lineTo(frameX + frameW - 10, frameY + frameH - 10); ctx.lineTo(frameX + frameW - 10, frameY + frameH - 10 - cL); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(fX + fW - 10 - cL, fY + fH - 10); ctx.lineTo(fX + fW - 10, fY + fH - 10); ctx.lineTo(fX + fW - 10, fY + fH - 10 - cL); ctx.stroke();
 
                 // Rotated Spec Sidebar Right (hiasan)
                 ctx.save();
@@ -941,22 +929,36 @@ document.addEventListener('DOMContentLoaded', () => {
                         drawX = frameX + (frameW - drawW) / 2;
                     }
 
+                    // Crimson backlit aura exactly behind the screenshot size (hiasan)
+                    const frameGlow = ctx.createRadialGradient(drawX + drawW/2, drawY + drawH/2, 50, drawX + drawW/2, drawY + drawH/2, 350);
+                    frameGlow.addColorStop(0, 'rgba(255, 30, 30, 0.25)');
+                    frameGlow.addColorStop(0.5, 'rgba(255, 30, 30, 0.03)');
+                    frameGlow.addColorStop(1, 'rgba(0, 0, 0, 0)');
+                    ctx.fillStyle = frameGlow;
+                    ctx.fillRect(drawX - 50, drawY - 50, drawW + 100, drawH + 100);
+
+                    // Draw frame background exactly matching the active image container size
+                    ctx.fillStyle = 'rgba(22, 10, 10, 0.75)';
+                    ctx.fillRect(drawX, drawY, drawW, drawH);
+
                     ctx.drawImage(img, drawX, drawY, drawW, drawH);
                     
                     // Draw a subtle red tint overlay on top of the image to blend it with Crimson Glow
                     ctx.fillStyle = 'rgba(255, 30, 30, 0.08)';
                     ctx.fillRect(drawX, drawY, drawW, drawH);
 
-                    renderNeonTextAndFooter();
+                    renderNeonTextAndFooter(drawX, drawY, drawW, drawH);
                 };
                 img.onerror = () => {
                     ctx.fillStyle = 'rgba(22, 10, 10, 0.9)';
                     ctx.fillRect(frameX, frameY, frameW, frameH);
-                    renderNeonTextAndFooter();
+                    renderNeonTextAndFooter(frameX, frameY, frameW, frameH);
                 };
                 img.src = ach.image;
             } else {
-                renderNeonTextAndFooter();
+                ctx.fillStyle = 'rgba(22, 10, 10, 0.9)';
+                ctx.fillRect(frameX, frameY, frameW, frameH);
+                renderNeonTextAndFooter(frameX, frameY, frameW, frameH);
             }
         }
     };
