@@ -223,8 +223,16 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.fillStyle = '#12150d';
             ctx.fillRect(0, 0, 800, 1000);
 
+            // Draw a heavy glowing aura background (Vignette + Center Glow)
+            const ambientGlow = ctx.createRadialGradient(400, 500, 100, 400, 500, 700);
+            ambientGlow.addColorStop(0, 'rgba(213, 255, 64, 0.15)'); // Rich glowing aura center
+            ambientGlow.addColorStop(0.5, 'rgba(18, 21, 13, 0.5)');
+            ambientGlow.addColorStop(1, 'rgba(6, 7, 4, 0.95)'); // Vignette borders
+            ctx.fillStyle = ambientGlow;
+            ctx.fillRect(0, 0, 800, 1000);
+
             // Draw square grid overlay
-            ctx.strokeStyle = 'rgba(213, 255, 64, 0.04)';
+            ctx.strokeStyle = 'rgba(213, 255, 64, 0.05)';
             ctx.lineWidth = 1;
             for (let x = 40; x < 800; x += 40) {
                 ctx.beginPath();
@@ -239,18 +247,30 @@ document.addEventListener('DOMContentLoaded', () => {
                 ctx.stroke();
             }
 
+            // Draw thick aura behind the screenshot frame (Eclipse effect)
+            const frameGlow = ctx.createRadialGradient(400, 395, 100, 400, 395, 520);
+            frameGlow.addColorStop(0, 'rgba(213, 255, 64, 0.45)'); // Heavy centered aura
+            frameGlow.addColorStop(0.3, 'rgba(213, 255, 64, 0.2)');
+            frameGlow.addColorStop(0.7, 'rgba(213, 255, 64, 0.03)');
+            frameGlow.addColorStop(1, 'rgba(0, 0, 0, 0)');
+            ctx.fillStyle = frameGlow;
+            ctx.fillRect(0, 150, 800, 500);
+
             // Outer lime border
             ctx.strokeStyle = '#d5ff40';
             ctx.lineWidth = 4;
             ctx.strokeRect(20, 20, 760, 960);
 
-            // Cross indicators
+            // Cross indicators (with subtle glow)
             ctx.fillStyle = '#d5ff40';
             ctx.font = '700 16px "Courier New", monospace';
+            ctx.shadowColor = '#d5ff40';
+            ctx.shadowBlur = 8;
             ctx.fillText('+', 40, 45);
             ctx.fillText('+', 750, 45);
             ctx.fillText('+', 40, 950);
             ctx.fillText('+', 750, 950);
+            ctx.shadowBlur = 0; // Reset shadow
 
             // Barcode top right
             ctx.fillStyle = '#ffffff';
@@ -269,11 +289,14 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.fillText('> RENDER_SYS_OK', 60, 55);
             ctx.fillText('SYS_TIME: ' + new Date().toISOString().slice(11,19) + ' UTC', 60, 70);
 
-            // Brand Title
+            // Brand Title (Gacor Brand Glow)
             ctx.textAlign = 'center';
             ctx.fillStyle = '#ffffff';
             ctx.font = '900 48px "Poppins", sans-serif';
+            ctx.shadowColor = '#d5ff40';
+            ctx.shadowBlur = 30; // Heavy glow
             ctx.fillText('FLEXCARD', 400, 115);
+            ctx.shadowBlur = 0; // Reset
 
             // Subtitle
             ctx.font = '700 12px "Courier New", monospace';
@@ -298,10 +321,13 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.fillStyle = '#1b1e15';
             ctx.fillRect(frameX, frameY, frameW, frameH);
 
-            // Sharp border
+            // Sharp border (Make frame border glow)
             ctx.strokeStyle = '#d5ff40';
             ctx.lineWidth = 2;
+            ctx.shadowColor = '#d5ff40';
+            ctx.shadowBlur = 15;
             ctx.strokeRect(frameX, frameY, frameW, frameH);
+            ctx.shadowBlur = 0; // Reset
 
             // Top-right coordinates box
             ctx.fillStyle = 'rgba(213, 255, 64, 0.15)';
@@ -318,11 +344,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const renderBrutalistTextAndFooter = () => {
                 ctx.textBaseline = 'middle';
-                // Game Title
+                // Game Title (Glowing)
                 ctx.textAlign = 'left';
                 ctx.fillStyle = '#d5ff40';
                 ctx.font = '800 24px "Poppins", sans-serif';
+                ctx.shadowColor = '#d5ff40';
+                ctx.shadowBlur = 12;
                 ctx.fillText('// ' + ach.game.toUpperCase(), 60, 650);
+                ctx.shadowBlur = 0;
 
                 // Date
                 ctx.textAlign = 'right';
@@ -330,11 +359,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 ctx.font = '700 16px "Courier New", monospace';
                 ctx.fillText('DATE_ ' + ach.date.replace(/-/g, '.'), 740, 650);
 
-                // Achievement Title
+                // Achievement Title (Glowing white text)
                 ctx.textAlign = 'left';
                 ctx.fillStyle = '#ffffff';
                 ctx.font = '900 44px "Poppins", sans-serif';
+                ctx.shadowColor = 'rgba(255, 255, 255, 0.4)';
+                ctx.shadowBlur = 15;
                 ctx.fillText(ach.title.toUpperCase(), 60, 715);
+                ctx.shadowBlur = 0;
 
                 // Description
                 ctx.fillStyle = '#c0c2b8';
