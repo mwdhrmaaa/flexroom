@@ -689,3 +689,53 @@ h1, h2, h3, h4, h5, h6 {
   justify-content: center;
   text-decoration: none;
 }
+
+/* Share style selector */
+.share-style-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.selector-label {
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.style-options {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+
+.style-opt-btn {
+  flex: 1;
+  padding: 10px;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--glass-border);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.style-opt-btn:hover {
+  border-color: rgba(213, 255, 64, 0.3);
+  background: rgba(213, 255, 64, 0.03);
+}
+
+.style-opt-btn.active {
+  background: var(--accent-lime);
+  color: var(--bg-primary);
+  border-color: var(--accent-lime);
+  box-shadow: 0 4px 12px rgba(213, 255, 64, 0.15);
+}

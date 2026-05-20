@@ -156,18 +156,37 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    const openShareModal = (ach) => {
-        shareModal.style.display = 'flex';
+    let activeAchievementForShare = null;
+    let currentShareStyle = 'brutalist';
+
+    // Style option click handlers
+    const styleOptBtns = document.querySelectorAll('.style-opt-btn');
+    styleOptBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            if (btn.classList.contains('active')) return;
+            
+            // Toggle active classes
+            styleOptBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            // Update style and regenerate
+            currentShareStyle = btn.getAttribute('data-style');
+            if (activeAchievementForShare) {
+                regenerateShareCard();
+            }
+        });
+    });
+
+    const regenerateShareCard = () => {
         shareLoader.style.display = 'flex';
         shareCardPreview.style.display = 'none';
         downloadShareCardBtn.style.opacity = '0.5';
         downloadShareCardBtn.style.pointerEvents = 'none';
 
-        // Draw and export
-        generateShareCard(ach, (dataUrl) => {
+        generateShareCard(activeAchievementForShare, currentShareStyle, (dataUrl) => {
             shareCardPreview.src = dataUrl;
             downloadShareCardBtn.href = dataUrl;
-            downloadShareCardBtn.download = `flexcard-${ach.title.toLowerCase().replace(/\s+/g, '-')}.png`;
+            downloadShareCardBtn.download = `flexcard-${activeAchievementForShare.title.toLowerCase().replace(/\s+/g, '-')}.png`;
             
             shareLoader.style.display = 'none';
             shareCardPreview.style.display = 'flex';
@@ -176,191 +195,403 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    const generateShareCard = (ach, callback) => {
+    const openShareModal = (ach) => {
+        activeAchievementForShare = ach;
+        shareModal.style.display = 'flex';
+        
+        // Reset active tab to brutalist when opening
+        styleOptBtns.forEach(btn => {
+            if (btn.getAttribute('data-style') === 'brutalist') {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+        currentShareStyle = 'brutalist';
+        
+        regenerateShareCard();
+    };
+
+    const generateShareCard = (ach, style, callback) => {
         const canvas = document.createElement('canvas');
         canvas.width = 800;
         canvas.height = 1000;
         const ctx = canvas.getContext('2d');
 
-        // 1. Draw solid dark background
-        ctx.fillStyle = '#0a0b0d';
-        ctx.fillRect(0, 0, 800, 1000);
+        if (style === 'brutalist') {
+            // Draw brutalist card
+            ctx.fillStyle = '#08080a';
+            ctx.fillRect(0, 0, 800, 1000);
 
-        // 2. Draw ambient radial glow
-        const glow = ctx.createRadialGradient(400, 300, 100, 400, 500, 600);
-        glow.addColorStop(0, 'rgba(213, 255, 64, 0.12)'); // Lime glow
-        glow.addColorStop(0.5, 'rgba(192, 194, 184, 0.04)'); // Muted silver glow
-        glow.addColorStop(1, 'rgba(0, 0, 0, 0)');
-        ctx.fillStyle = glow;
-        ctx.fillRect(0, 0, 800, 1000);
+            // Draw square grid overlay
+            ctx.strokeStyle = 'rgba(213, 255, 64, 0.04)';
+            ctx.lineWidth = 1;
+            for (let x = 40; x < 800; x += 40) {
+                ctx.beginPath();
+                ctx.moveTo(x, 20);
+                ctx.lineTo(x, 980);
+                ctx.stroke();
+            }
+            for (let y = 40; y < 1000; y += 40) {
+                ctx.beginPath();
+                ctx.moveTo(20, y);
+                ctx.lineTo(780, y);
+                ctx.stroke();
+            }
 
-        // 3. Draw dual elegant border
-        // Outer lime border
-        ctx.strokeStyle = '#d5ff40';
-        ctx.lineWidth = 4;
-        ctx.strokeRect(20, 20, 760, 960);
-        
-        // Inner muted border
-        ctx.strokeStyle = 'rgba(213, 255, 64, 0.2)';
-        ctx.lineWidth = 1;
-        ctx.strokeRect(26, 26, 748, 948);
+            // Outer lime border
+            ctx.strokeStyle = '#d5ff40';
+            ctx.lineWidth = 4;
+            ctx.strokeRect(20, 20, 760, 960);
 
-        // 4. Header branding
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        
-        // Brand Title
-        ctx.font = '800 32px "Poppins", sans-serif';
-        ctx.fillStyle = '#ffffff';
-        // Add neon shadow for brand
-        ctx.shadowColor = '#d5ff40';
-        ctx.shadowBlur = 10;
-        ctx.fillText('FLEXCARD', 400, 70);
-        ctx.shadowBlur = 0; // Reset shadow
+            // Cross indicators
+            ctx.fillStyle = '#d5ff40';
+            ctx.font = '700 16px "Courier New", monospace';
+            ctx.fillText('+', 40, 45);
+            ctx.fillText('+', 750, 45);
+            ctx.fillText('+', 40, 950);
+            ctx.fillText('+', 750, 950);
 
-        // Subtitle
-        ctx.font = '600 14px "Poppins", sans-serif';
-        ctx.fillStyle = '#c0c2b8';
-        ctx.fillText('LEGACY DIGITAL TROPHY', 400, 105);
+            // Barcode top right
+            ctx.fillStyle = '#ffffff';
+            let startX = 580;
+            let startY = 45;
+            for (let i = 0; i < 22; i++) {
+                let barWidth = (i % 5 === 0) ? 5 : (i % 3 === 0) ? 3 : (i % 2 === 0) ? 2 : 1;
+                ctx.fillRect(startX, startY, barWidth, 30);
+                startX += barWidth + Math.floor(Math.random() * 3) + 1;
+            }
 
-        // Decorative horizontal line
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.moveTo(100, 130);
-        ctx.lineTo(700, 130);
-        ctx.stroke();
-
-        // 5. Draw screenshot frame
-        const frameX = 50;
-        const frameY = 160;
-        const frameW = 700;
-        const frameH = 430;
-
-        // Draw frame background (glassy container)
-        ctx.fillStyle = 'rgba(19, 20, 24, 0.6)';
-        ctx.fillRect(frameX, frameY, frameW, frameH);
-        
-        // Draw frame border
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
-        ctx.lineWidth = 2;
-        ctx.strokeRect(frameX, frameY, frameW, frameH);
-
-        // Render screenshot
-        const renderTextAndFooter = () => {
-            // Game title
+            // System rendering status indicator top-left
             ctx.textAlign = 'left';
             ctx.fillStyle = '#d5ff40';
-            ctx.font = '800 24px "Poppins", sans-serif';
-            ctx.fillText(ach.game.toUpperCase(), 60, 640);
+            ctx.font = '700 11px "Courier New", monospace';
+            ctx.fillText('> RENDER_SYS_OK', 60, 55);
+            ctx.fillText('SYS_TIME: ' + new Date().toISOString().slice(11,19) + ' UTC', 60, 70);
 
-            // Date
-            ctx.textAlign = 'right';
-            ctx.fillStyle = '#c0c2b8';
-            ctx.font = '500 16px "Poppins", sans-serif';
-            ctx.fillText(ach.date, 740, 640);
-
-            // Achievement Title
-            ctx.textAlign = 'left';
+            // Brand Title
+            ctx.textAlign = 'center';
             ctx.fillStyle = '#ffffff';
-            ctx.font = '800 48px "Poppins", sans-serif';
-            ctx.fillText(ach.title, 60, 705);
+            ctx.font = '900 48px "Poppins", sans-serif';
+            ctx.fillText('FLEXCARD', 400, 115);
 
-            // Description
-            ctx.fillStyle = '#c0c2b8';
-            ctx.font = '400 20px "Poppins", sans-serif';
-            
-            // Wrap text helper
-            const wrapText = (text, x, y, maxWidth, lineHeight) => {
-                const words = text.split(' ');
-                let line = '';
-                let currentY = y;
-                for (let n = 0; n < words.length; n++) {
-                    let testLine = line + words[n] + ' ';
-                    let metrics = ctx.measureText(testLine);
-                    let testWidth = metrics.width;
-                    if (testWidth > maxWidth && n > 0) {
-                        ctx.fillText(line, x, currentY);
-                        line = words[n] + ' ';
-                        currentY += lineHeight;
-                    } else {
-                        line = testLine;
-                    }
-                }
-                ctx.fillText(line, x, currentY);
-            };
+            // Subtitle
+            ctx.font = '700 12px "Courier New", monospace';
+            ctx.fillStyle = '#d5ff40';
+            ctx.fillText('// CORE COLLECTIBLE VER.01 // SYSTEMATIC.AUTHENTIC', 400, 145);
 
-            wrapText(ach.description, 60, 770, 680, 28);
-
-            // Decorative separator
-            ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
-            ctx.lineWidth = 1;
+            // Separator
+            ctx.strokeStyle = '#d5ff40';
+            ctx.lineWidth = 2;
             ctx.beginPath();
-            ctx.moveTo(50, 890);
-            ctx.lineTo(750, 890);
+            ctx.moveTo(50, 160);
+            ctx.lineTo(750, 160);
             ctx.stroke();
 
-            // Footer branding
-            ctx.textAlign = 'center';
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
-            ctx.font = '600 14px "Poppins", sans-serif';
-            ctx.fillText('VERIFIED VIA FLEXROOM COLLECTIBLE SYSTEM', 400, 930);
+            // Screenshot frame
+            const frameX = 50;
+            const frameY = 180;
+            const frameW = 700;
+            const frameH = 430;
+
+            // Draw frame background
+            ctx.fillStyle = '#131418';
+            ctx.fillRect(frameX, frameY, frameW, frameH);
+
+            // Sharp border
+            ctx.strokeStyle = '#d5ff40';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(frameX, frameY, frameW, frameH);
+
+            // Top-right coordinates box
+            ctx.fillStyle = 'rgba(213, 255, 64, 0.15)';
+            ctx.fillRect(frameX + frameW - 140, frameY + 10, 130, 24);
+            ctx.strokeStyle = '#d5ff40';
+            ctx.lineWidth = 1;
+            ctx.strokeRect(frameX + frameW - 140, frameY + 10, 130, 24);
             
-            ctx.fillStyle = 'rgba(213, 255, 64, 0.4)';
-            ctx.font = '500 12px "Poppins", sans-serif';
-            ctx.fillText('flexroom.github.io', 400, 955);
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillStyle = '#d5ff40';
+            ctx.font = '700 9px "Courier New", monospace';
+            ctx.fillText('X_36.17 // Y_-86.76', frameX + frameW - 75, frameY + 22);
 
-            // Trigger callback with base64 url
-            callback(canvas.toDataURL('image/png'));
-        };
+            const renderBrutalistTextAndFooter = () => {
+                ctx.textBaseline = 'middle';
+                // Game Title
+                ctx.textAlign = 'left';
+                ctx.fillStyle = '#d5ff40';
+                ctx.font = '800 24px "Poppins", sans-serif';
+                ctx.fillText('// ' + ach.game.toUpperCase(), 60, 650);
 
-        if (ach.image) {
-            const img = new Image();
-            img.onload = () => {
-                // Draw image with object-fit: contain inside the frame
-                const imgRatio = img.width / img.height;
-                const frameRatio = frameW / frameH;
+                // Date
+                ctx.textAlign = 'right';
+                ctx.fillStyle = '#ffffff';
+                ctx.font = '700 16px "Courier New", monospace';
+                ctx.fillText('DATE_ ' + ach.date.replace(/-/g, '.'), 740, 650);
+
+                // Achievement Title
+                ctx.textAlign = 'left';
+                ctx.fillStyle = '#ffffff';
+                ctx.font = '900 44px "Poppins", sans-serif';
+                ctx.fillText(ach.title.toUpperCase(), 60, 715);
+
+                // Description
+                ctx.fillStyle = '#c0c2b8';
+                ctx.font = '500 18px "Poppins", sans-serif';
                 
-                let drawW = frameW;
-                let drawH = frameH;
-                let drawX = frameX;
-                let drawY = frameY;
+                const wrapText = (text, x, y, maxWidth, lineHeight) => {
+                    const words = text.split(' ');
+                    let line = '';
+                    let currentY = y;
+                    for (let n = 0; n < words.length; n++) {
+                        let testLine = line + words[n] + ' ';
+                        let metrics = ctx.measureText(testLine);
+                        let testWidth = metrics.width;
+                        if (testWidth > maxWidth && n > 0) {
+                            ctx.fillText(line, x, currentY);
+                            line = words[n] + ' ';
+                            currentY += lineHeight;
+                        } else {
+                            line = testLine;
+                        }
+                    }
+                    ctx.fillText(line, x, currentY);
+                };
 
-                if (imgRatio > frameRatio) {
-                    drawH = frameW / imgRatio;
-                    drawY = frameY + (frameH - drawH) / 2;
-                } else {
-                    drawW = frameH * imgRatio;
-                    drawX = frameX + (frameW - drawW) / 2;
+                wrapText(ach.description.toUpperCase(), 60, 775, 680, 26);
+
+                // Decorative separator
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(50, 895);
+                ctx.lineTo(750, 895);
+                ctx.stroke();
+
+                // Footer branding
+                ctx.textAlign = 'center';
+                ctx.fillStyle = '#d5ff40';
+                ctx.font = '800 12px "Courier New", monospace';
+                ctx.fillText('> ACCESS GRANTED // CORE_PRINCIPLES_OK <', 400, 930);
+
+                // Bottom Hazard Stripes
+                const stripeY = 952;
+                const stripeH = 18;
+                ctx.fillStyle = '#08080a';
+                ctx.fillRect(25, stripeY, 750, stripeH);
+                
+                ctx.strokeStyle = '#d5ff40';
+                ctx.lineWidth = 8;
+                for (let sx = 20; sx < 780; sx += 20) {
+                    ctx.beginPath();
+                    ctx.moveTo(sx, stripeY);
+                    ctx.lineTo(sx + 10, stripeY + stripeH);
+                    ctx.stroke();
                 }
 
-                ctx.drawImage(img, drawX, drawY, drawW, drawH);
-                renderTextAndFooter();
+                // Trigger callback
+                callback(canvas.toDataURL('image/png'));
             };
-            img.onerror = () => {
-                // Draw placeholder if image fails to load
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.03)';
+
+            // Draw screenshot if exists
+            if (ach.image) {
+                const img = new Image();
+                img.crossOrigin = 'anonymous';
+                img.onload = () => {
+                    const imgRatio = img.width / img.height;
+                    const frameRatio = frameW / frameH;
+                    
+                    let drawW = frameW;
+                    let drawH = frameH;
+                    let drawX = frameX;
+                    let drawY = frameY;
+
+                    if (imgRatio > frameRatio) {
+                        drawH = frameW / imgRatio;
+                        drawY = frameY + (frameH - drawH) / 2;
+                    } else {
+                        drawW = frameH * imgRatio;
+                        drawX = frameX + (frameW - drawW) / 2;
+                    }
+
+                    ctx.drawImage(img, drawX, drawY, drawW, drawH);
+                    renderBrutalistTextAndFooter();
+                };
+                img.onerror = () => {
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.03)';
+                    ctx.fillRect(frameX, frameY, frameW, frameH);
+                    renderBrutalistTextAndFooter();
+                };
+                img.src = ach.image;
+            } else {
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.02)';
                 ctx.fillRect(frameX, frameY, frameW, frameH);
-                ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
-                ctx.strokeRect(frameX, frameY, frameW, frameH);
-                
-                ctx.textAlign = 'center';
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.15)';
-                ctx.font = '500 18px "Inter", sans-serif';
-                ctx.fillText('Trophy Screenshot', 400, 375);
-                renderTextAndFooter();
-            };
-            img.src = ach.image;
-        } else {
-            // Draw placeholder trophy icon if no image
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.02)';
+                renderBrutalistTextAndFooter();
+            }
+
+        } else if (style === 'neon') {
+            // Draw neon card (current styling)
+            ctx.fillStyle = '#0a0b0d';
+            ctx.fillRect(0, 0, 800, 1000);
+
+            // Draw ambient radial glow
+            const glow = ctx.createRadialGradient(400, 300, 100, 400, 500, 600);
+            glow.addColorStop(0, 'rgba(213, 255, 64, 0.12)'); // Lime glow
+            glow.addColorStop(0.5, 'rgba(192, 194, 184, 0.04)'); // Muted silver glow
+            glow.addColorStop(1, 'rgba(0, 0, 0, 0)');
+            ctx.fillStyle = glow;
+            ctx.fillRect(0, 0, 800, 1000);
+
+            // Outer lime border
+            ctx.strokeStyle = '#d5ff40';
+            ctx.lineWidth = 4;
+            ctx.strokeRect(20, 20, 760, 960);
+            
+            // Inner muted border
+            ctx.strokeStyle = 'rgba(213, 255, 64, 0.2)';
+            ctx.lineWidth = 1;
+            ctx.strokeRect(26, 26, 748, 948);
+
+            // Header branding
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            
+            // Brand Title
+            ctx.font = '800 32px "Poppins", sans-serif';
+            ctx.fillStyle = '#ffffff';
+            ctx.shadowColor = '#d5ff40';
+            ctx.shadowBlur = 10;
+            ctx.fillText('FLEXCARD', 400, 70);
+            ctx.shadowBlur = 0; // Reset shadow
+
+            // Subtitle
+            ctx.font = '600 14px "Poppins", sans-serif';
+            ctx.fillStyle = '#c0c2b8';
+            ctx.fillText('LEGACY DIGITAL TROPHY', 400, 105);
+
+            // Decorative horizontal line
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(100, 130);
+            ctx.lineTo(700, 130);
+            ctx.stroke();
+
+            // Screenshot frame
+            const frameX = 50;
+            const frameY = 160;
+            const frameW = 700;
+            const frameH = 430;
+
+            // Draw frame background
+            ctx.fillStyle = 'rgba(19, 20, 24, 0.6)';
             ctx.fillRect(frameX, frameY, frameW, frameH);
             
-            ctx.textAlign = 'center';
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
-            ctx.font = '500 18px "Inter", sans-serif';
-            ctx.fillText('Trophy Screenshot Placeholder', 400, 375);
-            renderTextAndFooter();
+            // Draw frame border
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(frameX, frameY, frameW, frameH);
+
+            const renderNeonTextAndFooter = () => {
+                ctx.textBaseline = 'middle';
+                // Game title
+                ctx.textAlign = 'left';
+                ctx.fillStyle = '#d5ff40';
+                ctx.font = '800 24px "Poppins", sans-serif';
+                ctx.fillText(ach.game.toUpperCase(), 60, 640);
+
+                // Date
+                ctx.textAlign = 'right';
+                ctx.fillStyle = '#c0c2b8';
+                ctx.font = '500 16px "Poppins", sans-serif';
+                ctx.fillText(ach.date, 740, 640);
+
+                // Achievement Title
+                ctx.textAlign = 'left';
+                ctx.fillStyle = '#ffffff';
+                ctx.font = '800 48px "Poppins", sans-serif';
+                ctx.fillText(ach.title, 60, 705);
+
+                // Description
+                ctx.fillStyle = '#c0c2b8';
+                ctx.font = '400 20px "Poppins", sans-serif';
+                
+                const wrapText = (text, x, y, maxWidth, lineHeight) => {
+                    const words = text.split(' ');
+                    let line = '';
+                    let currentY = y;
+                    for (let n = 0; n < words.length; n++) {
+                        let testLine = line + words[n] + ' ';
+                        let metrics = ctx.measureText(testLine);
+                        let testWidth = metrics.width;
+                        if (testWidth > maxWidth && n > 0) {
+                            ctx.fillText(line, x, currentY);
+                            line = words[n] + ' ';
+                            currentY += lineHeight;
+                        } else {
+                            line = testLine;
+                        }
+                    }
+                    ctx.fillText(line, x, currentY);
+                };
+
+                wrapText(ach.description, 60, 770, 680, 28);
+
+                // Decorative separator
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(50, 890);
+                ctx.lineTo(750, 890);
+                ctx.stroke();
+
+                // Footer branding
+                ctx.textAlign = 'center';
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+                ctx.font = '600 14px "Poppins", sans-serif';
+                ctx.fillText('VERIFIED VIA FLEXROOM COLLECTIBLE SYSTEM', 400, 930);
+                
+                ctx.fillStyle = 'rgba(213, 255, 64, 0.4)';
+                ctx.font = '500 12px "Poppins", sans-serif';
+                ctx.fillText('flexroom.github.io', 400, 955);
+
+                // Trigger callback
+                callback(canvas.toDataURL('image/png'));
+            };
+
+            // Draw screenshot if exists
+            if (ach.image) {
+                const img = new Image();
+                img.onload = () => {
+                    const imgRatio = img.width / img.height;
+                    const frameRatio = frameW / frameH;
+                    
+                    let drawW = frameW;
+                    let drawH = frameH;
+                    let drawX = frameX;
+                    let drawY = frameY;
+
+                    if (imgRatio > frameRatio) {
+                        drawH = frameW / imgRatio;
+                        drawY = frameY + (frameH - drawH) / 2;
+                    } else {
+                        drawW = frameH * imgRatio;
+                        drawX = frameX + (frameW - drawW) / 2;
+                    }
+
+                    ctx.drawImage(img, drawX, drawY, drawW, drawH);
+                    renderNeonTextAndFooter();
+                };
+                img.onerror = () => {
+                    ctx.fillStyle = '#222';
+                    ctx.fillRect(frameX, frameY, frameW, frameH);
+                    renderNeonTextAndFooter();
+                };
+                img.src = ach.image;
+            } else {
+                renderNeonTextAndFooter();
+            }
         }
     };
 
