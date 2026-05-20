@@ -220,7 +220,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (style === 'brutalist') {
             // Draw brutalist card
-            ctx.fillStyle = '#08080a';
+            ctx.fillStyle = '#12150d';
             ctx.fillRect(0, 0, 800, 1000);
 
             // Draw square grid overlay
@@ -295,7 +295,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const frameH = 430;
 
             // Draw frame background
-            ctx.fillStyle = '#131418';
+            ctx.fillStyle = '#1b1e15';
             ctx.fillRect(frameX, frameY, frameW, frameH);
 
             // Sharp border
@@ -378,7 +378,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Bottom Hazard Stripes
                 const stripeY = 952;
                 const stripeH = 18;
-                ctx.fillStyle = '#08080a';
+                ctx.fillStyle = '#12150d';
                 ctx.fillRect(25, stripeY, 750, stripeH);
                 
                 ctx.strokeStyle = '#d5ff40';
