@@ -269,23 +269,42 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.fillText('> RENDER_SYS_OK', 60, 55);
             ctx.fillText('SYS_TIME: ' + new Date().toISOString().slice(11,19) + ' UTC', 60, 70);
 
-            // Brand Title
+            // Brand Title (Moved slightly higher)
             ctx.textAlign = 'center';
             ctx.fillStyle = '#ffffff';
             ctx.font = '900 48px "Poppins", sans-serif';
-            ctx.fillText('FLEXCARD', 400, 115);
+            ctx.fillText('FLEXCARD', 400, 95);
 
             // Subtitle
-            ctx.font = '700 12px "Courier New", monospace';
+            ctx.font = '700 11px "Courier New", monospace';
             ctx.fillStyle = '#d5ff40';
-            ctx.fillText('// CORE COLLECTIBLE VER.01 // SYSTEMATIC.AUTHENTIC', 400, 145);
+            ctx.fillText('// CORE COLLECTIBLE VER.01 // SYSTEMATIC.AUTHENTIC', 400, 120);
+
+            // Top technical stat columns
+            ctx.strokeStyle = 'rgba(213, 255, 64, 0.3)';
+            ctx.lineWidth = 1;
+            // Box 1
+            ctx.strokeRect(50, 132, 210, 22);
+            ctx.font = '700 9px "Courier New", monospace';
+            ctx.fillStyle = '#d5ff40';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('MEM_BANK: 0x8F993A [OK]', 155, 144);
+
+            // Box 2
+            ctx.strokeRect(295, 132, 210, 22);
+            ctx.fillText('CORE_USAGE: 89.2% [NORM]', 400, 144);
+
+            // Box 3
+            ctx.strokeRect(540, 132, 210, 22);
+            ctx.fillText('NET_CONN: ACTIVE_EST', 645, 144);
 
             // Separator
             ctx.strokeStyle = '#d5ff40';
             ctx.lineWidth = 2;
             ctx.beginPath();
-            ctx.moveTo(50, 160);
-            ctx.lineTo(750, 160);
+            ctx.moveTo(50, 168);
+            ctx.lineTo(750, 168);
             ctx.stroke();
 
             // Rotated Technical Spec Sidebar (hiasan)
@@ -349,6 +368,39 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const renderBrutalistTextAndFooter = () => {
                 ctx.textBaseline = 'middle';
+                
+                // Screenshot frame HUD overlay texts (drawn on top of the screenshot image)
+                ctx.textAlign = 'left';
+                ctx.fillStyle = '#d5ff40';
+                ctx.font = '700 9px "Courier New", monospace';
+                ctx.fillText('REC [●]  C_SYS_01 // 60FPS', frameX + 15, frameY + 22);
+                ctx.fillText('FOV_90 // OPT_LENS_50MM', frameX + 15, frameY + frameH - 18);
+                ctx.textAlign = 'right';
+                ctx.fillText('P_LAT: 14MS // STB_LVL_0.98', frameX + frameW - 15, frameY + frameH - 18);
+
+                // Center crosshair inside screenshot frame
+                ctx.strokeStyle = 'rgba(213, 255, 64, 0.45)';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.arc(frameX + frameW/2, frameY + frameH/2, 10, 0, Math.PI * 2);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(frameX + frameW/2 - 18, frameY + frameH/2); ctx.lineTo(frameX + frameW/2 - 4, frameY + frameH/2);
+                ctx.moveTo(frameX + frameW/2 + 4, frameY + frameH/2); ctx.lineTo(frameX + frameW/2 + 18, frameY + frameH/2);
+                ctx.moveTo(frameX + frameW/2, frameY + frameH/2 - 18); ctx.lineTo(frameX + frameW/2, frameY + frameH/2 - 4);
+                ctx.moveTo(frameX + frameW/2, frameY + frameH/2 + 4); ctx.lineTo(frameX + frameW/2, frameY + frameH/2 + 18);
+                ctx.stroke();
+
+                // Rotated Technical Spec Sidebar Left (hiasan)
+                ctx.save();
+                ctx.translate(18, 500);
+                ctx.rotate(-Math.PI / 2);
+                ctx.textAlign = 'center';
+                ctx.fillStyle = 'rgba(213, 255, 64, 0.35)';
+                ctx.font = '700 9px "Courier New", monospace';
+                ctx.fillText('UNIT_HASH_ID: 0xFD89A2 // TYPE: HARDWARE_MEM', 0, 0);
+                ctx.restore();
+
                 // Game Title
                 ctx.textAlign = 'left';
                 ctx.fillStyle = '#d5ff40';
@@ -390,7 +442,38 @@ document.addEventListener('DOMContentLoaded', () => {
                     ctx.fillText(line, x, currentY);
                 };
 
-                wrapText(ach.description.toUpperCase(), 60, 775, 680, 26);
+                wrapText(ach.description.toUpperCase(), 60, 775, 450, 26);
+
+                // Tactical RPG Stat Table (hiasan)
+                ctx.strokeStyle = 'rgba(213, 255, 64, 0.4)';
+                ctx.lineWidth = 1;
+                ctx.strokeRect(530, 762, 210, 115);
+                
+                // Header line for stats
+                ctx.fillStyle = 'rgba(213, 255, 64, 0.1)';
+                ctx.fillRect(530, 762, 210, 20);
+                ctx.fillStyle = '#d5ff40';
+                ctx.font = '800 9px "Courier New", monospace';
+                ctx.textAlign = 'center';
+                ctx.fillText('// HARDWARE_SPECS_SYS', 635, 772);
+
+                // Stat entries
+                ctx.font = '700 9px "Courier New", monospace';
+                const stats = [
+                    { label: 'RARITY', val: 'MYTHIC_V.01' },
+                    { label: 'INTELLIGENCE', val: '95.4 / 100' },
+                    { label: 'CALIBRATION', val: '88.1 / 100' },
+                    { label: 'STABILITY', val: '99.9%' }
+                ];
+                stats.forEach((s, idx) => {
+                     const sy = 798 + idx * 20;
+                     ctx.textAlign = 'left';
+                     ctx.fillStyle = '#c0c2b8';
+                     ctx.fillText(s.label, 540, sy);
+                     ctx.textAlign = 'right';
+                     ctx.fillStyle = '#d5ff40';
+                     ctx.fillText(s.val, 730, sy);
+                });
 
                 // Decorative separator
                 ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
@@ -496,6 +579,15 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.bezierCurveTo(250, 330, 350, 530, 800, 470);
             ctx.stroke();
 
+            // Draw large circular radar/compass rings (hiasan)
+            ctx.strokeStyle = 'rgba(255, 62, 62, 0.03)';
+            ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.arc(650, 350, 160, 0, Math.PI * 2); ctx.stroke();
+            ctx.beginPath(); ctx.arc(650, 350, 100, 0, Math.PI * 2); ctx.stroke();
+            ctx.beginPath(); ctx.arc(650, 350, 45, 0, Math.PI * 2); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(650 - 180, 350); ctx.lineTo(650 + 180, 350); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(650, 350 - 180); ctx.lineTo(650, 350 + 180); ctx.stroke();
+
             // Outer Crimson border
             ctx.strokeStyle = '#ff3e3e';
             ctx.lineWidth = 2;
@@ -574,6 +666,46 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const renderNeonTextAndFooter = () => {
                 ctx.textBaseline = 'middle';
+                
+                // Screenshot frame HUD overlay texts (drawn on top of the screenshot image)
+                ctx.textAlign = 'left';
+                ctx.fillStyle = '#ff8080';
+                ctx.font = '600 9px "Poppins", sans-serif';
+                ctx.fillText('[ SCANNING SOURCE_FILE ]', frameX + 15, frameY + 22);
+                ctx.textAlign = 'right';
+                ctx.fillText('MATRIX_ACTIVE_V.09', frameX + frameW - 15, frameY + 22);
+
+                // Scanning laser line across the middle of the frame (hiasan)
+                ctx.strokeStyle = 'rgba(255, 62, 62, 0.28)';
+                ctx.lineWidth = 1.5;
+                ctx.beginPath();
+                ctx.moveTo(frameX, frameY + frameH/2 + 25);
+                ctx.lineTo(frameX + frameW, frameY + frameH/2 + 25);
+                ctx.stroke();
+
+                // Corner crosshairs inside the screenshot frame corners (hiasan)
+                ctx.strokeStyle = 'rgba(255, 62, 62, 0.4)';
+                ctx.lineWidth = 1;
+                const cL = 10;
+                // Top-left
+                ctx.beginPath(); ctx.moveTo(frameX + 10, frameY + 10 + cL); ctx.lineTo(frameX + 10, frameY + 10); ctx.lineTo(frameX + 10 + cL, frameY + 10); ctx.stroke();
+                // Top-right
+                ctx.beginPath(); ctx.moveTo(frameX + frameW - 10 - cL, frameY + 10); ctx.lineTo(frameX + frameW - 10, frameY + 10); ctx.lineTo(frameX + frameW - 10, frameY + 10 + cL); ctx.stroke();
+                // Bottom-left
+                ctx.beginPath(); ctx.moveTo(frameX + 10, frameY + frameH - 10 - cL); ctx.lineTo(frameX + 10, frameY + frameH - 10); ctx.lineTo(frameX + 10 + cL, frameY + frameH - 10); ctx.stroke();
+                // Bottom-right
+                ctx.beginPath(); ctx.moveTo(frameX + frameW - 10 - cL, frameY + frameH - 10); ctx.lineTo(frameX + frameW - 10, frameY + frameH - 10); ctx.lineTo(frameX + frameW - 10, frameY + frameH - 10 - cL); ctx.stroke();
+
+                // Rotated Spec Sidebar Right (hiasan)
+                ctx.save();
+                ctx.translate(782, 500);
+                ctx.rotate(Math.PI / 2);
+                ctx.textAlign = 'center';
+                ctx.fillStyle = 'rgba(255, 62, 62, 0.35)';
+                ctx.font = '600 9px "Poppins", sans-serif';
+                ctx.fillText('CORE_DB_ARCHIVE_FILE_7493A_REV_02', 0, 0);
+                ctx.restore();
+
                 // Game title
                 ctx.textAlign = 'left';
                 ctx.fillStyle = '#ff3e3e';
@@ -618,7 +750,52 @@ document.addEventListener('DOMContentLoaded', () => {
                     ctx.fillText(line, x, currentY);
                 };
 
-                wrapText(ach.description, 60, 770, 680, 28);
+                wrapText(ach.description, 60, 770, 450, 28);
+
+                // Hologram Stats Widget (hiasan)
+                ctx.strokeStyle = 'rgba(255, 62, 62, 0.25)';
+                ctx.lineWidth = 1;
+                ctx.strokeRect(530, 762, 210, 115);
+                
+                // Header line
+                ctx.fillStyle = 'rgba(255, 62, 62, 0.08)';
+                ctx.fillRect(530, 762, 210, 20);
+                ctx.fillStyle = '#ff8080';
+                ctx.font = '600 9px "Poppins", sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText('DATABASE ARCHIVE OVERLAY', 635, 772);
+
+                // Progress bars
+                const neonStats = [
+                    { name: 'SYNC RATIO', val: 94, unit: '%' },
+                    { name: 'STABILITY', val: 89, unit: '%' },
+                    { name: 'INDEX TEMP', val: 42, unit: '°C' }
+                ];
+                neonStats.forEach((ns, idx) => {
+                    const sy = 804 + idx * 25;
+                    
+                    // Label
+                    ctx.textAlign = 'left';
+                    ctx.fillStyle = '#a5a6a9';
+                    ctx.font = '600 9px "Poppins", sans-serif';
+                    ctx.fillText(ns.name, 540, sy);
+                    
+                    // Val text
+                    ctx.textAlign = 'right';
+                    ctx.fillStyle = '#ff3e3e';
+                    ctx.fillText(ns.val + ns.unit, 730, sy);
+                    
+                    // Progress bar background
+                    ctx.fillStyle = 'rgba(255, 62, 62, 0.1)';
+                    ctx.fillRect(540, sy + 5, 180, 4);
+                    
+                    // Filled progress bar (glowing)
+                    ctx.fillStyle = '#ff3e3e';
+                    ctx.shadowColor = '#ff3e3e';
+                    ctx.shadowBlur = 4;
+                    ctx.fillRect(540, sy + 5, (180 * ns.val) / 100, 4);
+                    ctx.shadowBlur = 0; // Reset
+                });
 
                 // Rating Diamond Badges (inspired by AgentAI star/dots)
                 ctx.fillStyle = '#ff3e3e';
