@@ -182,25 +182,25 @@ document.addEventListener('DOMContentLoaded', () => {
         const ctx = canvas.getContext('2d');
 
         // 1. Draw solid dark background
-        ctx.fillStyle = '#0a0a0f';
+        ctx.fillStyle = '#0a0b0d';
         ctx.fillRect(0, 0, 800, 1000);
 
         // 2. Draw ambient radial glow
         const glow = ctx.createRadialGradient(400, 300, 100, 400, 500, 600);
-        glow.addColorStop(0, 'rgba(157, 0, 255, 0.15)'); // Purple glow
-        glow.addColorStop(0.5, 'rgba(0, 243, 255, 0.08)'); // Cyan glow
+        glow.addColorStop(0, 'rgba(213, 255, 64, 0.12)'); // Lime glow
+        glow.addColorStop(0.5, 'rgba(192, 194, 184, 0.04)'); // Muted silver glow
         glow.addColorStop(1, 'rgba(0, 0, 0, 0)');
         ctx.fillStyle = glow;
         ctx.fillRect(0, 0, 800, 1000);
 
         // 3. Draw dual elegant border
-        // Outer cyan border
-        ctx.strokeStyle = '#00f3ff';
+        // Outer lime border
+        ctx.strokeStyle = '#d5ff40';
         ctx.lineWidth = 4;
         ctx.strokeRect(20, 20, 760, 960);
         
-        // Inner purple border
-        ctx.strokeStyle = '#9d00ff';
+        // Inner muted border
+        ctx.strokeStyle = 'rgba(213, 255, 64, 0.2)';
         ctx.lineWidth = 1;
         ctx.strokeRect(26, 26, 748, 948);
 
@@ -209,17 +209,17 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.textBaseline = 'middle';
         
         // Brand Title
-        ctx.font = '800 32px "Outfit", sans-serif';
+        ctx.font = '800 32px "Poppins", sans-serif';
         ctx.fillStyle = '#ffffff';
         // Add neon shadow for brand
-        ctx.shadowColor = '#00f3ff';
+        ctx.shadowColor = '#d5ff40';
         ctx.shadowBlur = 10;
         ctx.fillText('FLEXROOM', 400, 70);
         ctx.shadowBlur = 0; // Reset shadow
 
         // Subtitle
-        ctx.font = '600 14px "Outfit", sans-serif';
-        ctx.fillStyle = '#a0a0b0';
+        ctx.font = '600 14px "Poppins", sans-serif';
+        ctx.fillStyle = '#c0c2b8';
         ctx.fillText('LEGACY DIGITAL TROPHY', 400, 105);
 
         // Decorative horizontal line
@@ -237,7 +237,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const frameH = 430;
 
         // Draw frame background (glassy container)
-        ctx.fillStyle = 'rgba(18, 18, 26, 0.6)';
+        ctx.fillStyle = 'rgba(19, 20, 24, 0.6)';
         ctx.fillRect(frameX, frameY, frameW, frameH);
         
         // Draw frame border
@@ -249,25 +249,25 @@ document.addEventListener('DOMContentLoaded', () => {
         const renderTextAndFooter = () => {
             // Game title
             ctx.textAlign = 'left';
-            ctx.fillStyle = '#00f3ff';
-            ctx.font = '800 24px "Outfit", sans-serif';
+            ctx.fillStyle = '#d5ff40';
+            ctx.font = '800 24px "Poppins", sans-serif';
             ctx.fillText(ach.game.toUpperCase(), 60, 640);
 
             // Date
             ctx.textAlign = 'right';
-            ctx.fillStyle = '#a0a0b0';
-            ctx.font = '500 16px "Inter", sans-serif';
+            ctx.fillStyle = '#c0c2b8';
+            ctx.font = '500 16px "Poppins", sans-serif';
             ctx.fillText(ach.date, 740, 640);
 
             // Achievement Title
             ctx.textAlign = 'left';
             ctx.fillStyle = '#ffffff';
-            ctx.font = '800 48px "Outfit", sans-serif';
+            ctx.font = '800 48px "Poppins", sans-serif';
             ctx.fillText(ach.title, 60, 705);
 
             // Description
-            ctx.fillStyle = '#a0a0b0';
-            ctx.font = '400 20px "Inter", sans-serif';
+            ctx.fillStyle = '#c0c2b8';
+            ctx.font = '400 20px "Poppins", sans-serif';
             
             // Wrap text helper
             const wrapText = (text, x, y, maxWidth, lineHeight) => {
@@ -302,11 +302,11 @@ document.addEventListener('DOMContentLoaded', () => {
             // Footer branding
             ctx.textAlign = 'center';
             ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
-            ctx.font = '600 14px "Outfit", sans-serif';
+            ctx.font = '600 14px "Poppins", sans-serif';
             ctx.fillText('VERIFIED VIA FLEXROOM COLLECTIBLE SYSTEM', 400, 930);
             
-            ctx.fillStyle = 'rgba(0, 243, 255, 0.4)';
-            ctx.font = '500 12px "Inter", sans-serif';
+            ctx.fillStyle = 'rgba(213, 255, 64, 0.4)';
+            ctx.font = '500 12px "Poppins", sans-serif';
             ctx.fillText('flexroom.github.io', 400, 955);
 
             // Trigger callback with base64 url
