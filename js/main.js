@@ -431,25 +431,25 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
         } else if (style === 'neon') {
-            // Draw neon card (current styling)
-            ctx.fillStyle = '#0a0b0d';
+            // Draw Crimson Glow card (inspired by high-tech agent AI theme)
+            ctx.fillStyle = '#060608';
             ctx.fillRect(0, 0, 800, 1000);
 
-            // Draw ambient radial glow
-            const glow = ctx.createRadialGradient(400, 300, 100, 400, 500, 600);
-            glow.addColorStop(0, 'rgba(213, 255, 64, 0.12)'); // Lime glow
-            glow.addColorStop(0.5, 'rgba(192, 194, 184, 0.04)'); // Muted silver glow
+            // Draw thick ambient radial glow (Crimson Red Aura)
+            const glow = ctx.createRadialGradient(400, 400, 50, 400, 450, 600);
+            glow.addColorStop(0, 'rgba(255, 30, 30, 0.22)'); // Intense Crimson Red center aura
+            glow.addColorStop(0.5, 'rgba(22, 10, 10, 0.05)');
             glow.addColorStop(1, 'rgba(0, 0, 0, 0)');
             ctx.fillStyle = glow;
             ctx.fillRect(0, 0, 800, 1000);
 
-            // Outer lime border
-            ctx.strokeStyle = '#d5ff40';
-            ctx.lineWidth = 4;
+            // Outer Crimson border
+            ctx.strokeStyle = '#ff3e3e';
+            ctx.lineWidth = 2;
             ctx.strokeRect(20, 20, 760, 960);
             
             // Inner muted border
-            ctx.strokeStyle = 'rgba(213, 255, 64, 0.2)';
+            ctx.strokeStyle = 'rgba(255, 62, 62, 0.12)';
             ctx.lineWidth = 1;
             ctx.strokeRect(26, 26, 748, 948);
 
@@ -457,21 +457,21 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             
-            // Brand Title
+            // Brand Title (Glowing Crimson)
             ctx.font = '800 32px "Poppins", sans-serif';
             ctx.fillStyle = '#ffffff';
-            ctx.shadowColor = '#d5ff40';
-            ctx.shadowBlur = 10;
+            ctx.shadowColor = '#ff3e3e';
+            ctx.shadowBlur = 15;
             ctx.fillText('FLEXCARD', 400, 70);
             ctx.shadowBlur = 0; // Reset shadow
 
             // Subtitle
             ctx.font = '600 14px "Poppins", sans-serif';
-            ctx.fillStyle = '#c0c2b8';
+            ctx.fillStyle = '#a5a6a9';
             ctx.fillText('LEGACY DIGITAL TROPHY', 400, 105);
 
             // Decorative horizontal line
-            ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+            ctx.strokeStyle = 'rgba(255, 62, 62, 0.15)';
             ctx.lineWidth = 1;
             ctx.beginPath();
             ctx.moveTo(100, 130);
@@ -484,12 +484,20 @@ document.addEventListener('DOMContentLoaded', () => {
             const frameW = 700;
             const frameH = 430;
 
+            // Draw Crimson backlit aura behind screenshot frame
+            const frameGlow = ctx.createRadialGradient(400, 375, 100, 400, 375, 450);
+            frameGlow.addColorStop(0, 'rgba(255, 30, 30, 0.28)'); // Thick backlight
+            frameGlow.addColorStop(0.5, 'rgba(255, 30, 30, 0.05)');
+            frameGlow.addColorStop(1, 'rgba(0, 0, 0, 0)');
+            ctx.fillStyle = frameGlow;
+            ctx.fillRect(0, 120, 800, 520);
+
             // Draw frame background
-            ctx.fillStyle = 'rgba(19, 20, 24, 0.6)';
+            ctx.fillStyle = 'rgba(22, 10, 10, 0.65)';
             ctx.fillRect(frameX, frameY, frameW, frameH);
             
             // Draw frame border
-            ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+            ctx.strokeStyle = 'rgba(255, 62, 62, 0.18)';
             ctx.lineWidth = 2;
             ctx.strokeRect(frameX, frameY, frameW, frameH);
 
@@ -497,13 +505,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 ctx.textBaseline = 'middle';
                 // Game title
                 ctx.textAlign = 'left';
-                ctx.fillStyle = '#d5ff40';
+                ctx.fillStyle = '#ff3e3e';
                 ctx.font = '800 24px "Poppins", sans-serif';
+                ctx.shadowColor = '#ff3e3e';
+                ctx.shadowBlur = 8;
                 ctx.fillText(ach.game.toUpperCase(), 60, 640);
+                ctx.shadowBlur = 0;
 
                 // Date
                 ctx.textAlign = 'right';
-                ctx.fillStyle = '#c0c2b8';
+                ctx.fillStyle = '#a5a6a9';
                 ctx.font = '500 16px "Poppins", sans-serif';
                 ctx.fillText(ach.date, 740, 640);
 
@@ -539,7 +550,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 wrapText(ach.description, 60, 770, 680, 28);
 
                 // Decorative separator
-                ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+                ctx.strokeStyle = 'rgba(255, 62, 62, 0.12)';
                 ctx.lineWidth = 1;
                 ctx.beginPath();
                 ctx.moveTo(50, 890);
@@ -552,7 +563,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 ctx.font = '600 14px "Poppins", sans-serif';
                 ctx.fillText('VERIFIED VIA FLEXROOM COLLECTIBLE SYSTEM', 400, 930);
                 
-                ctx.fillStyle = 'rgba(213, 255, 64, 0.4)';
+                ctx.fillStyle = 'rgba(255, 62, 62, 0.5)';
                 ctx.font = '500 12px "Poppins", sans-serif';
                 ctx.fillText('flexroom.github.io', 400, 955);
 
@@ -563,6 +574,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Draw screenshot if exists
             if (ach.image) {
                 const img = new Image();
+                img.crossOrigin = 'anonymous';
                 img.onload = () => {
                     const imgRatio = img.width / img.height;
                     const frameRatio = frameW / frameH;
@@ -581,10 +593,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
 
                     ctx.drawImage(img, drawX, drawY, drawW, drawH);
+                    
+                    // Draw a subtle red tint overlay on top of the image to blend it with Crimson Glow
+                    ctx.fillStyle = 'rgba(255, 30, 30, 0.08)';
+                    ctx.fillRect(drawX, drawY, drawW, drawH);
+
                     renderNeonTextAndFooter();
                 };
                 img.onerror = () => {
-                    ctx.fillStyle = '#222';
+                    ctx.fillStyle = 'rgba(22, 10, 10, 0.9)';
                     ctx.fillRect(frameX, frameY, frameW, frameH);
                     renderNeonTextAndFooter();
                 };
