@@ -36,6 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const imageHTML = achievement.image ? `
             <div class="card-image-container">
                 <img src="${achievement.image}" alt="${achievement.title}" class="card-image" onerror="this.onerror=null; this.src='https://via.placeholder.com/800x400?text=Image+Not+Found'" />
+                <div class="card-image-overlay"></div>
             </div>` : '';
 
         const shareBtnHTML = `
