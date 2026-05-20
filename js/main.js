@@ -288,6 +288,24 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.lineTo(750, 160);
             ctx.stroke();
 
+            // Rotated Technical Spec Sidebar (hiasan)
+            ctx.save();
+            ctx.translate(782, 500);
+            ctx.rotate(Math.PI / 2);
+            ctx.textAlign = 'center';
+            ctx.fillStyle = 'rgba(213, 255, 64, 0.35)';
+            ctx.font = '700 9px "Courier New", monospace';
+            ctx.fillText('SYS.LOC.FLXRM // STABLE_SYS_INIT_0x99F', 0, 0);
+            ctx.restore();
+
+            // Dot-matrix decoration top-left of grid
+            ctx.fillStyle = 'rgba(213, 255, 64, 0.4)';
+            for (let r = 0; r < 4; r++) {
+                for (let c = 0; c < 4; c++) {
+                    ctx.fillRect(52 + c * 8, 172 + r * 8, 3, 3);
+                }
+            }
+
             // Screenshot frame
             const frameX = 50;
             const frameY = 180;
@@ -302,6 +320,19 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.strokeStyle = '#d5ff40';
             ctx.lineWidth = 2;
             ctx.strokeRect(frameX, frameY, frameW, frameH);
+
+            // Brutalist corner target brackets (hiasan)
+            ctx.strokeStyle = '#d5ff40';
+            ctx.lineWidth = 2;
+            const bSize = 15;
+            // Top-left
+            ctx.beginPath(); ctx.moveTo(frameX - 6, frameY - 6 + bSize); ctx.lineTo(frameX - 6, frameY - 6); ctx.lineTo(frameX - 6 + bSize, frameY - 6); ctx.stroke();
+            // Top-right
+            ctx.beginPath(); ctx.moveTo(frameX + frameW + 6 - bSize, frameY - 6); ctx.lineTo(frameX + frameW + 6, frameY - 6); ctx.lineTo(frameX + frameW + 6, frameY - 6 + bSize); ctx.stroke();
+            // Bottom-left
+            ctx.beginPath(); ctx.moveTo(frameX - 6, frameY + frameH + 6 - bSize); ctx.lineTo(frameX - 6, frameY + frameH + 6); ctx.lineTo(frameX - 6 + bSize, frameY + frameH + 6); ctx.stroke();
+            // Bottom-right
+            ctx.beginPath(); ctx.moveTo(frameX + frameW + 6 - bSize, frameY + frameH + 6); ctx.lineTo(frameX + frameW + 6, frameY + frameH + 6); ctx.lineTo(frameX + frameW + 6, frameY + frameH + 6 - bSize); ctx.stroke();
 
             // Top-right coordinates box
             ctx.fillStyle = 'rgba(213, 255, 64, 0.15)';
@@ -435,6 +466,16 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.fillStyle = '#060608';
             ctx.fillRect(0, 0, 800, 1000);
 
+            // Draw a subtle dot grid in the background (hiasan)
+            ctx.fillStyle = 'rgba(255, 62, 62, 0.08)';
+            for (let dx = 40; dx < 760; dx += 60) {
+                for (let dy = 40; dy < 960; dy += 60) {
+                    ctx.beginPath();
+                    ctx.arc(dx, dy, 1, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+
             // Draw thick ambient radial glow (Crimson Red Aura)
             const glow = ctx.createRadialGradient(400, 400, 50, 400, 450, 600);
             glow.addColorStop(0, 'rgba(255, 30, 30, 0.22)'); // Intense Crimson Red center aura
@@ -442,6 +483,18 @@ document.addEventListener('DOMContentLoaded', () => {
             glow.addColorStop(1, 'rgba(0, 0, 0, 0)');
             ctx.fillStyle = glow;
             ctx.fillRect(0, 0, 800, 1000);
+
+            // Draw abstract glowing wave curves in background (hiasan)
+            ctx.strokeStyle = 'rgba(255, 62, 62, 0.04)';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(0, 350);
+            ctx.bezierCurveTo(200, 250, 400, 550, 800, 450);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(0, 400);
+            ctx.bezierCurveTo(250, 330, 350, 530, 800, 470);
+            ctx.stroke();
 
             // Outer Crimson border
             ctx.strokeStyle = '#ff3e3e';
@@ -469,6 +522,24 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.font = '600 14px "Poppins", sans-serif';
             ctx.fillStyle = '#a5a6a9';
             ctx.fillText('LEGACY DIGITAL TROPHY', 400, 105);
+
+            // Capsule badge at top right (hiasan)
+            const badgeX = 570;
+            const badgeY = 93;
+            const badgeW = 170;
+            const badgeH = 24;
+            ctx.fillStyle = 'rgba(255, 62, 62, 0.08)';
+            ctx.strokeStyle = 'rgba(255, 62, 62, 0.25)';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.roundRect(badgeX, badgeY, badgeW, badgeH, 12);
+            ctx.fill();
+            ctx.stroke();
+
+            ctx.textAlign = 'center';
+            ctx.fillStyle = '#ff8080';
+            ctx.font = '700 9px "Courier New", monospace';
+            ctx.fillText('SN: FLX-2026-CORE', badgeX + badgeW/2, badgeY + badgeH/2 + 1);
 
             // Decorative horizontal line
             ctx.strokeStyle = 'rgba(255, 62, 62, 0.15)';
@@ -548,6 +619,29 @@ document.addEventListener('DOMContentLoaded', () => {
                 };
 
                 wrapText(ach.description, 60, 770, 680, 28);
+
+                // Rating Diamond Badges (inspired by AgentAI star/dots)
+                ctx.fillStyle = '#ff3e3e';
+                ctx.shadowColor = '#ff3e3e';
+                ctx.shadowBlur = 6;
+                for (let s = 0; s < 5; s++) {
+                    ctx.beginPath();
+                    const sx = 60 + s * 16;
+                    const sy = 862;
+                    ctx.moveTo(sx, sy - 5);
+                    ctx.lineTo(sx + 4, sy);
+                    ctx.lineTo(sx, sy + 5);
+                    ctx.lineTo(sx - 4, sy);
+                    ctx.closePath();
+                    ctx.fill();
+                }
+                ctx.shadowBlur = 0; // Reset
+
+                // Tier text next to diamonds
+                ctx.textAlign = 'left';
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.35)';
+                ctx.font = '600 11px "Poppins", sans-serif';
+                ctx.fillText('VERIFIED LEGACY COLLECTIBLE', 150, 862);
 
                 // Decorative separator
                 ctx.strokeStyle = 'rgba(255, 62, 62, 0.12)';
