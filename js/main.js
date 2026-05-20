@@ -239,10 +239,38 @@ document.addEventListener('DOMContentLoaded', () => {
                 ctx.stroke();
             }
 
+            // Draw faint binary/hex streams in the background grid (hiasan rame)
+            ctx.fillStyle = 'rgba(213, 255, 64, 0.015)';
+            ctx.font = '700 8px "Courier New", monospace';
+            ctx.textAlign = 'left';
+            for (let col = 40; col < 800; col += 120) {
+                for (let row = 40; row < 1000; row += 35) {
+                    const fakeHex = '0x' + Math.floor(Math.random() * 256).toString(16).toUpperCase();
+                    ctx.fillText(fakeHex, col + 5, row - 5);
+                }
+            }
+
+            // Faint intersection coordinates (hiasan rame)
+            ctx.fillStyle = 'rgba(213, 255, 64, 0.03)';
+            for (let x = 160; x < 800; x += 160) {
+                for (let y = 160; y < 1000; y += 160) {
+                    ctx.fillText(`${x},${y}`, x + 4, y - 4);
+                }
+            }
+
             // Outer lime border
             ctx.strokeStyle = '#d5ff40';
             ctx.lineWidth = 4;
             ctx.strokeRect(20, 20, 760, 960);
+
+            // Tiny border tech labels (hiasan rame)
+            ctx.fillStyle = '#d5ff40';
+            ctx.font = '700 8px "Courier New", monospace';
+            ctx.fillText('[ SECURE_LOG_SYS ]', 30, 16);
+            ctx.fillText('[ CORE_LOC: 0x9AF0 ]', 350, 16);
+            ctx.fillText('[ RENDER_MODE: TACTICAL ]', 590, 16);
+            ctx.fillText('[ STATUS: STABLE ]', 30, 989);
+            ctx.fillText('[ END_OF_CORE ]', 680, 989);
 
             // Cross indicators
             ctx.fillStyle = '#d5ff40';
@@ -586,17 +614,56 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.beginPath(); ctx.arc(650, 350, 100, 0, Math.PI * 2); ctx.stroke();
             ctx.beginPath(); ctx.arc(650, 350, 45, 0, Math.PI * 2); ctx.stroke();
             ctx.beginPath(); ctx.moveTo(650 - 180, 350); ctx.lineTo(650 + 180, 350); ctx.stroke();
-            ctx.beginPath(); ctx.moveTo(650, 350 - 180); ctx.lineTo(650, 350 + 180); ctx.stroke();
-
-            // Outer Crimson border
+            ctx.beginPath(); ctx.moveTo(650, 350 - 180); ctx.lineTo(650, 350 + 180); ctx.stroke();            // Outer Crimson border
             ctx.strokeStyle = '#ff3e3e';
             ctx.lineWidth = 2;
             ctx.strokeRect(20, 20, 760, 960);
             
+            // Outer corner alignment widgets (hiasan rame)
+            ctx.strokeStyle = 'rgba(255, 62, 62, 0.4)';
+            ctx.lineWidth = 1;
+            // Top-left corner
+            ctx.strokeRect(30, 30, 16, 16);
+            ctx.beginPath(); ctx.moveTo(38, 30); ctx.lineTo(38, 46); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(30, 38); ctx.lineTo(46, 38); ctx.stroke();
+            ctx.fillStyle = '#ff8080';
+            ctx.font = '700 8px "Courier New", monospace';
+            ctx.textAlign = 'left';
+            ctx.fillText('SYS_LOC: 0x9A', 52, 38);
+            ctx.fillText('LATENCY: 0.03ms', 52, 47);
+
+            // Top-right corner
+            ctx.strokeRect(754, 30, 16, 16);
+            ctx.beginPath(); ctx.moveTo(762, 30); ctx.lineTo(762, 46); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(754, 38); ctx.lineTo(770, 38); ctx.stroke();
+            ctx.textAlign = 'right';
+            ctx.fillText('SYS_CORE: v0.9', 744, 38);
+            ctx.fillText('TEMP: 27.2K', 744, 47);
+
+            // Bottom-left corner
+            ctx.strokeRect(30, 954, 16, 16);
+            ctx.beginPath(); ctx.moveTo(38, 954); ctx.lineTo(38, 970); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(30, 962); ctx.lineTo(46, 962); ctx.stroke();
+            ctx.textAlign = 'left';
+            ctx.fillText('SECURE_ENV: PASS', 52, 963);
+
+            // Bottom-right corner
+            ctx.strokeRect(754, 954, 16, 16);
+            ctx.beginPath(); ctx.moveTo(762, 954); ctx.lineTo(762, 970); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(754, 962); ctx.lineTo(770, 962); ctx.stroke();
+            ctx.textAlign = 'right';
+            ctx.fillText('HASH: 0x7F23D', 744, 963);
+
             // Inner muted border
             ctx.strokeStyle = 'rgba(255, 62, 62, 0.12)';
             ctx.lineWidth = 1;
             ctx.strokeRect(26, 26, 748, 948);
+
+            // Micro tech ticker data along bottom border (hiasan rame)
+            ctx.fillStyle = 'rgba(255, 62, 62, 0.25)';
+            ctx.font = '600 7px "Courier New", monospace';
+            ctx.textAlign = 'center';
+            ctx.fillText('▲ ▼ SYSTEM LOG // ARCHIVE INDEXER ACTIVE // ❖ ⧇ ⧈ ⧉ ⧊ ⧋ ⧌ // SECURE NETWORK PORT 443 [OK]', 400, 980);
 
             // Header branding
             ctx.textAlign = 'center';
@@ -609,6 +676,17 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.shadowBlur = 15;
             ctx.fillText('FLEXCARD', 400, 70);
             ctx.shadowBlur = 0; // Reset shadow
+
+            // Micro wave frequency next to title (hiasan rame)
+            ctx.strokeStyle = 'rgba(255, 62, 62, 0.35)';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            for (let gx = 0; gx < 50; gx += 4) {
+                const gy = 70 + Math.sin(gx * 0.2) * 6 + Math.random() * 2;
+                if (gx === 0) ctx.moveTo(225 + gx, gy);
+                else ctx.lineTo(225 + gx, gy);
+            }
+            ctx.stroke();
 
             // Subtitle
             ctx.font = '600 14px "Poppins", sans-serif';
