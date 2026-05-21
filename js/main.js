@@ -364,7 +364,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 // Sharp border (exactly around active image container size)
                 ctx.strokeStyle = '#d5ff40';
-                ctx.lineWidth = 2;
+                ctx.lineWidth = 4;
                 ctx.strokeRect(fX, fY, fW, fH);
 
                 // Brutalist corner target brackets (exactly around active image container size)
