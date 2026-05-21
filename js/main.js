@@ -729,8 +729,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 ctx.textBaseline = 'middle';
 
                 // Draw frame border (exactly around active image size)
-                ctx.strokeStyle = 'rgba(255, 62, 62, 0.28)';
-                ctx.lineWidth = 20;
+                ctx.strokeStyle = '#ff0000';
+                ctx.lineWidth = 4;
                 ctx.strokeRect(fX, fY, fW, fH);
                 
                 // Screenshot frame HUD overlay texts (drawn on top of the screenshot image)
