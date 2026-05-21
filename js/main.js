@@ -8,11 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Default empty data
     const defaultAchievements = [];
 
-    // One-time clear of old mock achievements to start completely fresh
-    if (!localStorage.getItem('flexroom_fresh_start_v1')) {
-        localStorage.removeItem('flexroom_achievements');
-        localStorage.setItem('flexroom_fresh_start_v1', 'true');
-    }
+// Preserve existing achievements; no automatic clearing
 
     // Load from localStorage safely
     let achievements = [];
