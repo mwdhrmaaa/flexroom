@@ -937,13 +937,33 @@ document.addEventListener('DOMContentLoaded', () => {
                     ctx.fillStyle = frameGlow;
                     ctx.fillRect(drawX - 50, drawY - 50, drawW + 100, drawH + 100);
 
-                    // Draw frame background exactly matching the active image container size
-                    // Draw frame background with richer red gradient
-                const bgGrad = ctx.createLinearGradient(drawX, drawY, drawX + drawW, drawY + drawH);
-                bgGrad.addColorStop(0, 'rgba(180, 30, 30, 0.6)');
-                bgGrad.addColorStop(1, 'rgba(60, 0, 0, 0.6)');
-                ctx.fillStyle = bgGrad;
-                ctx.fillRect(drawX, drawY, drawW, drawH);
+                                        // Draw frame background with richer red gradient
+                    const bgGrad = ctx.createLinearGradient(drawX, drawY, drawX + drawW, drawY + drawH);
+                    bgGrad.addColorStop(0, 'rgba(180, 30, 30, 0.6)');
+                    bgGrad.addColorStop(1, 'rgba(60, 0, 0, 0.6)');
+                    ctx.fillStyle = bgGrad;
+                    ctx.fillRect(drawX, drawY, drawW, drawH);
+
+                    // Futuristic grid overlay (abstract pattern)
+                    ctx.save();
+                    ctx.globalAlpha = 0.12;
+                    ctx.strokeStyle = '#ff4040';
+                    ctx.lineWidth = 1;
+                    // vertical lines
+                    for (let i = 0; i <= drawW; i += 30) {
+                        ctx.beginPath();
+                        ctx.moveTo(drawX + i, drawY);
+                        ctx.lineTo(drawX + i, drawY + drawH);
+                        ctx.stroke();
+                    }
+                    // horizontal lines
+                    for (let j = 0; j <= drawH; j += 30) {
+                        ctx.beginPath();
+                        ctx.moveTo(drawX, drawY + j);
+                        ctx.lineTo(drawX + drawW, drawY + j);
+                        ctx.stroke();
+                    }
+                    ctx.restore();
 
 
                     ctx.drawImage(img, drawX, drawY, drawW, drawH);
