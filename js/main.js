@@ -972,6 +972,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     ctx.fillStyle = 'rgba(255, 30, 30, 0.08)';
                     ctx.fillRect(drawX, drawY, drawW, drawH);
 
+                    // Demo: render futuristic template overlay (offset for visibility)
+                    renderFuturisticCard(drawX + 10, drawY + 10, drawW - 20, drawH - 20);
                     renderNeonTextAndFooter(drawX, drawY, drawW, drawH);
                 };
                 img.onerror = () => {
@@ -1151,10 +1153,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
 const renderFuturisticCard = (fX, fY, fW, fH) => {
     // Outer border (solid cyan, 4px)
+    // Outer border (solid cyan, 4px) with subtle glow
     ctx.save();
     ctx.strokeStyle = '#00ffff';
     ctx.lineWidth = 4;
+    ctx.shadowColor = '#00ffff';
+    ctx.shadowBlur = 12; // bloom effect
     ctx.strokeRect(fX, fY, fW, fH);
+    // Reset shadow for subsequent drawing
+    ctx.shadowColor = 'transparent';
+    ctx.shadowBlur = 0;
+    ctx.restore();
 
     // Backlit aura (soft cyan)
     const aura = ctx.createRadialGradient(fX + fW / 2, fY + fH / 2, 40, fX + fW / 2, fY + fH / 2, 300);
@@ -1171,10 +1180,10 @@ const renderFuturisticCard = (fX, fY, fW, fH) => {
     ctx.fillStyle = bgGrad;
     ctx.fillRect(fX, fY, fW, fH);
 
-    // Diagonal mesh overlay (abstract futuristic pattern)
+// Updated mesh overlay for stronger visibility
     ctx.save();
-    ctx.globalAlpha = 0.12;
-    ctx.strokeStyle = '#00bfff';
+    ctx.globalAlpha = 0.25; // more opaque
+    ctx.strokeStyle = '#00e0ff'; // brighter cyan
     ctx.lineWidth = 1;
     const step = 30;
     // Diagonal lines TL‑BR
@@ -1191,7 +1200,7 @@ const renderFuturisticCard = (fX, fY, fW, fH) => {
         ctx.lineTo(fX + i + fH, fY);
         ctx.stroke();
     }
-    ctx.restore();
+    ctx.restore(); // end mesh overlay
 
     // Placeholder HUD text
     ctx.fillStyle = '#00ffff';
