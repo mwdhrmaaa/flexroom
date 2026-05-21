@@ -1211,3 +1211,58 @@ const renderFuturisticCard = (fX, fY, fW, fH) => {
 };
 
 // Keep a blank line after the new function for readability
+
+// =============================
+// New Quantum Template (distinct from Crimson Glow)
+// =============================
+
+const renderQuantumCard = (fX, fY, fW, fH) => {
+    // Outer border: neon purple with glow
+    ctx.save();
+    ctx.strokeStyle = '#ff00ff';
+    ctx.lineWidth = 4;
+    ctx.shadowColor = '#ff00ff';
+    ctx.shadowBlur = 10;
+    ctx.strokeRect(fX, fY, fW, fH);
+    ctx.restore();
+
+    // Background gradient: magenta to deep blue
+    const bgGrad = ctx.createLinearGradient(fX, fY, fX + fW, fY + fH);
+    bgGrad.addColorStop(0, 'rgba(200, 0, 150, 0.6)');
+    bgGrad.addColorStop(1, 'rgba(0, 0, 80, 0.6)');
+    ctx.fillStyle = bgGrad;
+    ctx.fillRect(fX, fY, fW, fH);
+
+    // Rotating particles (static dots for demo)
+    ctx.save();
+    ctx.globalAlpha = 0.2;
+    ctx.fillStyle = '#ff80ff';
+    const particleCount = 20;
+    for (let i = 0; i < particleCount; i++) {
+        const px = fX + Math.random() * fW;
+        const py = fY + Math.random() * fH;
+        const pr = 2 + Math.random() * 3;
+        ctx.beginPath();
+        ctx.arc(px, py, pr, 0, Math.PI * 2);
+        ctx.fill();
+    }
+    ctx.restore();
+
+    // Scan line placeholder
+    ctx.save();
+    ctx.strokeStyle = 'rgba(255,0,255,0.5)';
+    ctx.lineWidth = 2;
+    const scanY = fY + fH / 2;
+    ctx.beginPath();
+    ctx.moveTo(fX, scanY);
+    ctx.lineTo(fX + fW, scanY);
+    ctx.stroke();
+    ctx.restore();
+
+    // HUD text
+    ctx.fillStyle = '#ff80ff';
+    ctx.font = '600 12px "Poppins", sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText('QUANTUM TEMPLATE', fX + 10, fY + 20);
+};
+
