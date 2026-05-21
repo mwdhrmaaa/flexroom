@@ -572,7 +572,29 @@ document.addEventListener('DOMContentLoaded', () => {
                 renderBrutalistTextAndFooter(frameX, frameY, frameW, frameH);
             }
 
-        } else if (style === 'neon') {
+            // Style-specific rendering handled later after image load
+            // Draw Futuristic template background and overlay
+            ctx.fillStyle = '#060608'; // base dark background similar to neon
+            ctx.fillRect(0, 0, 800, 1000);
+            // Optional: add subtle cyan-purple gradient or mesh
+            const cyberGrad = ctx.createLinearGradient(0, 0, 800, 1000);
+            cyberGrad.addColorStop(0, 'rgba(0, 180, 180, 0.3)');
+            cyberGrad.addColorStop(1, 'rgba(80, 0, 120, 0.3)');
+            ctx.fillStyle = cyberGrad;
+            ctx.fillRect(0, 0, 800, 1000);
+            // Add a faint grid overlay
+            ctx.save();
+            ctx.globalAlpha = 0.1;
+            ctx.strokeStyle = '#00e0ff';
+            ctx.lineWidth = 1;
+            for (let i = 0; i <= 800; i += 40) {
+                ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, 1000); ctx.stroke();
+            }
+            for (let j = 0; j <= 1000; j += 40) {
+                ctx.beginPath(); ctx.moveTo(0, j); ctx.lineTo(800, j); ctx.stroke();
+            }
+            ctx.restore();
+
             // Draw Crimson Glow card (inspired by high-tech agent AI theme)
             ctx.fillStyle = '#060608';
             ctx.fillRect(0, 0, 800, 1000);
@@ -972,9 +994,21 @@ document.addEventListener('DOMContentLoaded', () => {
                     ctx.fillStyle = 'rgba(255, 30, 30, 0.08)';
                     ctx.fillRect(drawX, drawY, drawW, drawH);
 
-                    // Demo: render futuristic template overlay (offset for visibility)
-                    renderFuturisticCard(drawX + 10, drawY + 10, drawW - 20, drawH - 20);
-                    renderNeonTextAndFooter(drawX, drawY, drawW, drawH);
+                    // Render footer/HUD based on selected style
+                    switch (style) {
+                        case 'neon':
+                            renderNeonTextAndFooter(drawX, drawY, drawW, drawH);
+                            break;
+                        case 'cyber':
+                            renderFuturisticCard(drawX, drawY, drawW, drawH);
+                            break;
+                        case 'quantum':
+                            renderQuantumCard(drawX, drawY, drawW, drawH);
+                            break;
+                        default:
+                            // Fallback to Brutalist
+                            renderBrutalistTextAndFooter(drawX, drawY, drawW, drawH);
+                    }
                 };
                 img.onerror = () => {
                     ctx.fillStyle = 'rgba(22, 10, 10, 0.9)';
