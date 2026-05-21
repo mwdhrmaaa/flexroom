@@ -729,7 +729,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 ctx.textBaseline = 'middle';
 
                 // Draw frame border (exactly around active image size)
-                ctx.strokeStyle = '#ff0000';
+                ctx.strokeStyle = '#e04343ff';
                 ctx.lineWidth = 4;
                 ctx.strokeRect(fX, fY, fW, fH);
                 
