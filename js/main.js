@@ -938,8 +938,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     ctx.fillRect(drawX - 50, drawY - 50, drawW + 100, drawH + 100);
 
                     // Draw frame background exactly matching the active image container size
-                    ctx.fillStyle = 'rgba(22, 10, 10, 0.75)';
-                    ctx.fillRect(drawX, drawY, drawW, drawH);
+                    // Draw frame background with richer red gradient
+                const bgGrad = ctx.createLinearGradient(drawX, drawY, drawX + drawW, drawY + drawH);
+                bgGrad.addColorStop(0, 'rgba(180, 30, 30, 0.6)');
+                bgGrad.addColorStop(1, 'rgba(60, 0, 0, 0.6)');
+                ctx.fillStyle = bgGrad;
+                ctx.fillRect(drawX, drawY, drawW, drawH);
+
 
                     ctx.drawImage(img, drawX, drawY, drawW, drawH);
                     
