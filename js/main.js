@@ -566,44 +566,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 ctx.fillStyle = '#1b1e15';
                 ctx.fillRect(frameX, frameY, frameW, frameH);
                 renderBrutalistTextAndFooter(frameX, frameY, frameW, frameH);
-            }
-
-            // Rendering for each style is handled later in the image onload switch
-            // Draw Futuristic template background and overlay
-            ctx.fillStyle = '#060608'; // base dark background similar to neon
-            ctx.fillRect(0, 0, 800, 1000);
-            // Optional: add subtle cyan-purple gradient or mesh
-            const cyberGrad = ctx.createLinearGradient(0, 0, 800, 1000);
-            cyberGrad.addColorStop(0, 'rgba(0, 180, 180, 0.3)');
-            cyberGrad.addColorStop(1, 'rgba(80, 0, 120, 0.3)');
-            ctx.fillStyle = cyberGrad;
-            ctx.fillRect(0, 0, 800, 1000);
-            // Add a faint grid overlay
-            ctx.save();
-            ctx.globalAlpha = 0.1;
-            ctx.strokeStyle = '#00e0ff';
-            ctx.lineWidth = 1;
-            for (let i = 0; i <= 800; i += 40) {
-                ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, 1000); ctx.stroke();
-            }
-            for (let j = 0; j <= 1000; j += 40) {
-                ctx.beginPath(); ctx.moveTo(0, j); ctx.lineTo(800, j); ctx.stroke();
-            }
-            ctx.restore();
-
-            // Draw Crimson Glow card (inspired by high-tech agent AI theme)
-            ctx.fillStyle = '#060608';
-            ctx.fillRect(0, 0, 800, 1000);
-
-            // Draw a subtle dot grid in the background (hiasan)
-            ctx.fillStyle = 'rgba(255, 62, 62, 0.08)';
-            for (let dx = 40; dx < 760; dx += 60) {
-                for (let dy = 40; dy < 960; dy += 60) {
-                    ctx.beginPath();
-                    ctx.arc(dx, dy, 1, 0, Math.PI * 2);
-                    ctx.fill();
-                }
-            }
+            }            // Rendering of style‑specific background is handled inside render* functions
+ }
 
             // Draw thick ambient radial glow (Crimson Red Aura)
             const glow = ctx.createRadialGradient(400, 400, 50, 400, 450, 600);
