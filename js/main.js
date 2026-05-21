@@ -1142,3 +1142,63 @@ document.addEventListener('DOMContentLoaded', () => {
         modal.style.display = 'none';
     });
 });
+
+// =============================
+// New Futuristic Template (alternative to Crimson Glow)
+// =============================
+// This template creates a vibrant, futuristic card with cyan‑purple gradient and diagonal mesh.
+// Use it like renderFuturisticCard(x, y, w, h).
+
+const renderFuturisticCard = (fX, fY, fW, fH) => {
+    // Outer border (solid cyan, 4px)
+    ctx.save();
+    ctx.strokeStyle = '#00ffff';
+    ctx.lineWidth = 4;
+    ctx.strokeRect(fX, fY, fW, fH);
+
+    // Backlit aura (soft cyan)
+    const aura = ctx.createRadialGradient(fX + fW / 2, fY + fH / 2, 40, fX + fW / 2, fY + fH / 2, 300);
+    aura.addColorStop(0, 'rgba(0,255,255,0.25)');
+    aura.addColorStop(0.5, 'rgba(0,255,255,0.05)');
+    aura.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = aura;
+    ctx.fillRect(fX - 40, fY - 40, fW + 80, fH + 80);
+
+    // Gradient background (cyan → deep purple)
+    const bgGrad = ctx.createLinearGradient(fX, fY, fX + fW, fY + fH);
+    bgGrad.addColorStop(0, 'rgba(0,180,180,0.6)');
+    bgGrad.addColorStop(1, 'rgba(80,0,120,0.6)');
+    ctx.fillStyle = bgGrad;
+    ctx.fillRect(fX, fY, fW, fH);
+
+    // Diagonal mesh overlay (abstract futuristic pattern)
+    ctx.save();
+    ctx.globalAlpha = 0.12;
+    ctx.strokeStyle = '#00bfff';
+    ctx.lineWidth = 1;
+    const step = 30;
+    // Diagonal lines TL‑BR
+    for (let i = -fW; i < fW * 2; i += step) {
+        ctx.beginPath();
+        ctx.moveTo(fX + i, fY);
+        ctx.lineTo(fX + i + fH, fY + fH);
+        ctx.stroke();
+    }
+    // Diagonal lines BL‑TR
+    for (let i = -fW; i < fW * 2; i += step) {
+        ctx.beginPath();
+        ctx.moveTo(fX + i, fY + fH);
+        ctx.lineTo(fX + i + fH, fY);
+        ctx.stroke();
+    }
+    ctx.restore();
+
+    // Placeholder HUD text
+    ctx.fillStyle = '#00ffff';
+    ctx.font = '600 12px "Poppins", sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText('FUTURISTIC TEMPLATE', fX + 15, fY + 20);
+    ctx.restore();
+};
+
+// Keep a blank line after the new function for readability
