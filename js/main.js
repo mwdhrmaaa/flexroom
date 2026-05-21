@@ -743,7 +743,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // Scanning laser line across the middle of the frame (hiasan)
                 ctx.strokeStyle = 'rgba(255, 62, 62, 0.28)';
-                ctx.lineWidth = 1.5;
+                ctx.lineWidth = 4;
                 ctx.beginPath();
                 ctx.moveTo(fX, fY + fH/2 + 25);
                 ctx.lineTo(fX + fW, fY + fH/2 + 25);
