@@ -572,7 +572,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 renderBrutalistTextAndFooter(frameX, frameY, frameW, frameH);
             }
 
-            // Style-specific rendering handled later after image load
+            // Rendering for each style is handled later in the image onload switch
             // Draw Futuristic template background and overlay
             ctx.fillStyle = '#060608'; // base dark background similar to neon
             ctx.fillRect(0, 0, 800, 1000);
