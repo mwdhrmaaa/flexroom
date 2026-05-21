@@ -214,6 +214,96 @@ document.addEventListener('DOMContentLoaded', () => {
         canvas.height = 1000;
         const ctx = canvas.getContext('2d');
 
+        // =============================
+        // New Futuristic Template 
+        // =============================
+        const renderFuturisticCard = (fX, fY, fW, fH) => {
+            ctx.save();
+            ctx.strokeStyle = '#00ffff';
+            ctx.lineWidth = 4;
+            ctx.shadowColor = '#00ffff';
+            ctx.shadowBlur = 12;
+            ctx.strokeRect(fX, fY, fW, fH);
+            ctx.shadowColor = 'transparent';
+            ctx.shadowBlur = 0;
+            ctx.restore();
+
+            const aura = ctx.createRadialGradient(fX + fW / 2, fY + fH / 2, 40, fX + fW / 2, fY + fH / 2, 300);
+            aura.addColorStop(0, 'rgba(0,255,255,0.25)');
+            aura.addColorStop(0.5, 'rgba(0,255,255,0.05)');
+            aura.addColorStop(1, 'rgba(0,0,0,0)');
+            ctx.fillStyle = aura;
+            ctx.fillRect(fX - 40, fY - 40, fW + 80, fH + 80);
+
+            const bgGrad = ctx.createLinearGradient(fX, fY, fX + fW, fY + fH);
+            bgGrad.addColorStop(0, 'rgba(0,180,180,0.6)');
+            bgGrad.addColorStop(1, 'rgba(80,0,120,0.6)');
+            ctx.fillStyle = bgGrad;
+            ctx.fillRect(fX, fY, fW, fH);
+
+            ctx.save();
+            ctx.globalAlpha = 0.25;
+            ctx.strokeStyle = '#00e0ff';
+            ctx.lineWidth = 1;
+            const step = 30;
+            for (let i = -fW; i < fW * 2; i += step) {
+                ctx.beginPath(); ctx.moveTo(fX + i, fY); ctx.lineTo(fX + i + fH, fY + fH); ctx.stroke();
+            }
+            for (let i = -fW; i < fW * 2; i += step) {
+                ctx.beginPath(); ctx.moveTo(fX + i, fY + fH); ctx.lineTo(fX + i + fH, fY); ctx.stroke();
+            }
+            ctx.restore();
+
+            ctx.fillStyle = '#00ffff';
+            ctx.font = '600 12px "Poppins", sans-serif';
+            ctx.textAlign = 'left';
+            ctx.fillText('FUTURISTIC TEMPLATE', fX + 15, fY + 20);
+        };
+
+        // =============================
+        // New Quantum Template
+        // =============================
+        const renderQuantumCard = (fX, fY, fW, fH) => {
+            ctx.save();
+            ctx.strokeStyle = '#ff00ff';
+            ctx.lineWidth = 4;
+            ctx.shadowColor = '#ff00ff';
+            ctx.shadowBlur = 10;
+            ctx.strokeRect(fX, fY, fW, fH);
+            ctx.restore();
+
+            const bgGrad = ctx.createLinearGradient(fX, fY, fX + fW, fY + fH);
+            bgGrad.addColorStop(0, 'rgba(200, 0, 150, 0.6)');
+            bgGrad.addColorStop(1, 'rgba(0, 0, 80, 0.6)');
+            ctx.fillStyle = bgGrad;
+            ctx.fillRect(fX, fY, fW, fH);
+
+            ctx.save();
+            ctx.globalAlpha = 0.2;
+            ctx.fillStyle = '#ff80ff';
+            const particleCount = 20;
+            for (let i = 0; i < particleCount; i++) {
+                const px = fX + Math.random() * fW;
+                const py = fY + Math.random() * fH;
+                const pr = 2 + Math.random() * 3;
+                ctx.beginPath(); ctx.arc(px, py, pr, 0, Math.PI * 2); ctx.fill();
+            }
+            ctx.restore();
+
+            ctx.save();
+            ctx.strokeStyle = 'rgba(255,0,255,0.5)';
+            ctx.lineWidth = 2;
+            const scanY = fY + fH / 2;
+            ctx.beginPath(); ctx.moveTo(fX, scanY); ctx.lineTo(fX + fW, scanY); ctx.stroke();
+            ctx.restore();
+
+            ctx.fillStyle = '#ff80ff';
+            ctx.font = '600 12px "Poppins", sans-serif';
+            ctx.textAlign = 'left';
+            ctx.fillText('QUANTUM TEMPLATE', fX + 10, fY + 20);
+        };
+
+
         if (style === 'brutalist') {
             // Draw brutalist card
             ctx.fillStyle = '#12150d';
@@ -1138,125 +1228,3 @@ document.addEventListener('DOMContentLoaded', () => {
         modal.style.display = 'none';
     });
 });
-
-// =============================
-// New Futuristic Template (alternative to Crimson Glow)
-// =============================
-// This template creates a vibrant, futuristic card with cyan‑purple gradient and diagonal mesh.
-// Use it like renderFuturisticCard(x, y, w, h).
-
-const renderFuturisticCard = (fX, fY, fW, fH) => {
-    // Outer border (solid cyan, 4px)
-    // Outer border (solid cyan, 4px) with subtle glow
-    ctx.save();
-    ctx.strokeStyle = '#00ffff';
-    ctx.lineWidth = 4;
-    ctx.shadowColor = '#00ffff';
-    ctx.shadowBlur = 12; // bloom effect
-    ctx.strokeRect(fX, fY, fW, fH);
-    // Reset shadow for subsequent drawing
-    ctx.shadowColor = 'transparent';
-    ctx.shadowBlur = 0;
-    ctx.restore();
-
-    // Backlit aura (soft cyan)
-    const aura = ctx.createRadialGradient(fX + fW / 2, fY + fH / 2, 40, fX + fW / 2, fY + fH / 2, 300);
-    aura.addColorStop(0, 'rgba(0,255,255,0.25)');
-    aura.addColorStop(0.5, 'rgba(0,255,255,0.05)');
-    aura.addColorStop(1, 'rgba(0,0,0,0)');
-    ctx.fillStyle = aura;
-    ctx.fillRect(fX - 40, fY - 40, fW + 80, fH + 80);
-
-    // Gradient background (cyan → deep purple)
-    const bgGrad = ctx.createLinearGradient(fX, fY, fX + fW, fY + fH);
-    bgGrad.addColorStop(0, 'rgba(0,180,180,0.6)');
-    bgGrad.addColorStop(1, 'rgba(80,0,120,0.6)');
-    ctx.fillStyle = bgGrad;
-    ctx.fillRect(fX, fY, fW, fH);
-
-// Updated mesh overlay for stronger visibility
-    ctx.save();
-    ctx.globalAlpha = 0.25; // more opaque
-    ctx.strokeStyle = '#00e0ff'; // brighter cyan
-    ctx.lineWidth = 1;
-    const step = 30;
-    // Diagonal lines TL‑BR
-    for (let i = -fW; i < fW * 2; i += step) {
-        ctx.beginPath();
-        ctx.moveTo(fX + i, fY);
-        ctx.lineTo(fX + i + fH, fY + fH);
-        ctx.stroke();
-    }
-    // Diagonal lines BL‑TR
-    for (let i = -fW; i < fW * 2; i += step) {
-        ctx.beginPath();
-        ctx.moveTo(fX + i, fY + fH);
-        ctx.lineTo(fX + i + fH, fY);
-        ctx.stroke();
-    }
-    ctx.restore(); // end mesh overlay
-
-    // Placeholder HUD text
-    ctx.fillStyle = '#00ffff';
-    ctx.font = '600 12px "Poppins", sans-serif';
-    ctx.textAlign = 'left';
-    ctx.fillText('FUTURISTIC TEMPLATE', fX + 15, fY + 20);
-    ctx.restore();
-};
-
-// Keep a blank line after the new function for readability
-
-// =============================
-// New Quantum Template (distinct from Crimson Glow)
-// =============================
-
-const renderQuantumCard = (fX, fY, fW, fH) => {
-    // Outer border: neon purple with glow
-    ctx.save();
-    ctx.strokeStyle = '#ff00ff';
-    ctx.lineWidth = 4;
-    ctx.shadowColor = '#ff00ff';
-    ctx.shadowBlur = 10;
-    ctx.strokeRect(fX, fY, fW, fH);
-    ctx.restore();
-
-    // Background gradient: magenta to deep blue
-    const bgGrad = ctx.createLinearGradient(fX, fY, fX + fW, fY + fH);
-    bgGrad.addColorStop(0, 'rgba(200, 0, 150, 0.6)');
-    bgGrad.addColorStop(1, 'rgba(0, 0, 80, 0.6)');
-    ctx.fillStyle = bgGrad;
-    ctx.fillRect(fX, fY, fW, fH);
-
-    // Rotating particles (static dots for demo)
-    ctx.save();
-    ctx.globalAlpha = 0.2;
-    ctx.fillStyle = '#ff80ff';
-    const particleCount = 20;
-    for (let i = 0; i < particleCount; i++) {
-        const px = fX + Math.random() * fW;
-        const py = fY + Math.random() * fH;
-        const pr = 2 + Math.random() * 3;
-        ctx.beginPath();
-        ctx.arc(px, py, pr, 0, Math.PI * 2);
-        ctx.fill();
-    }
-    ctx.restore();
-
-    // Scan line placeholder
-    ctx.save();
-    ctx.strokeStyle = 'rgba(255,0,255,0.5)';
-    ctx.lineWidth = 2;
-    const scanY = fY + fH / 2;
-    ctx.beginPath();
-    ctx.moveTo(fX, scanY);
-    ctx.lineTo(fX + fW, scanY);
-    ctx.stroke();
-    ctx.restore();
-
-    // HUD text
-    ctx.fillStyle = '#ff80ff';
-    ctx.font = '600 12px "Poppins", sans-serif';
-    ctx.textAlign = 'left';
-    ctx.fillText('QUANTUM TEMPLATE', fX + 10, fY + 20);
-};
-
