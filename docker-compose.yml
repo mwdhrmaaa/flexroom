@@ -1,0 +1,9 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: flexroom_static_app
+    restart: unless-stopped
+    ports:
+      - "${PORT:-8080}:80"
