@@ -1,11 +1,12 @@
-# Local shell scripts
-*.sh
+# Environment & Logs
+*.log
+.env
+.env.*
 
 # OS metadata
 .DS_Store
 Thumbs.db
 
-# Node dependencies (just in case)
+# Dependencies & Build
 node_modules/
 package-lock.json
-
