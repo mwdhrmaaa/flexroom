@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { calculateImageFit } from '../src/features/trophy_generator/canvas_context.js';
 import { TEMPLATE_REGISTRY } from '../src/features/trophy_generator/trophy_generator.js';
 import { calculateEmptySlots } from '../src/features/achievements/achievement_grid.js';
-import { escapeHtml } from '../src/features/achievements/achievement_card.js';
+import { escapeHtml, createAchievementCardHtml, FALLBACK_IMAGE_DATA_URI } from '../src/features/achievements/achievement_card.js';
 
 describe('Trophy Generator & Grid Calculations', () => {
   it('should calculate proper frame positioning for image aspect ratios', () => {
@@ -36,5 +36,11 @@ describe('Trophy Generator & Grid Calculations', () => {
     assert.strictEqual(escaped.includes('<script>'), false);
     assert.strictEqual(escaped.includes('&lt;script&gt;'), true);
     assert.strictEqual(escaped.includes('&amp;'), true);
+  });
+
+  it('should use offline fallback SVG data URI when image is empty', () => {
+    const html = createAchievementCardHtml({ id: 1, title: 'No Pic', game: 'Test Game', description: 'Desc' });
+    assert.strictEqual(html.includes(FALLBACK_IMAGE_DATA_URI), true);
+    assert.strictEqual(html.includes('via.placeholder.com'), false);
   });
 });
