@@ -44,6 +44,9 @@ export function compressImage(file, maxDim = 800, quality = 0.7) {
       img.onerror = () => reject(new Error('Failed to load image element.'));
       img.onload = () => {
         const { width, height } = calculateDimensions(img.width, img.height, maxDim);
+        if (width <= 0 || height <= 0) {
+          return reject(new Error('Invalid image dimensions.'));
+        }
         const canvas = document.createElement('canvas');
         canvas.width = width;
         canvas.height = height;

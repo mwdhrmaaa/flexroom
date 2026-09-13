@@ -48,35 +48,47 @@ export function calculateImageFit(imgWidth, imgHeight, frameX, frameY, frameW, f
 }
 
 /**
- * Utility to wrap and draw text block on canvas.
+ * Utility to wrap and draw text block on canvas with newline and maxLines support.
  * @param {CanvasRenderingContext2D} ctx
  * @param {string} text
  * @param {number} x
  * @param {number} y
  * @param {number} maxWidth
  * @param {number} lineHeight
+ * @param {number} [maxLines=5]
  */
-export function wrapCanvasText(ctx, text, x, y, maxWidth, lineHeight) {
-  const words = String(text || '').split(' ');
-  let line = '';
+export function wrapCanvasText(ctx, text, x, y, maxWidth, lineHeight, maxLines = 5) {
+  const rawParagraphs = String(text || '').split('\n');
   let currentY = y;
+  let linesDrawn = 0;
 
-  for (let n = 0; n < words.length; n++) {
-    const testLine = line + words[n] + ' ';
-    const metrics = ctx.measureText(testLine);
-    if (metrics.width > maxWidth && n > 0) {
-      ctx.fillText(line, x, currentY);
-      line = words[n] + ' ';
+  for (const para of rawParagraphs) {
+    const words = para.split(' ');
+    let line = '';
+    for (let n = 0; n < words.length; n++) {
+      const testLine = line + words[n] + ' ';
+      const metrics = ctx.measureText(testLine);
+      if (metrics.width > maxWidth && n > 0) {
+        ctx.fillText(line.trim(), x, currentY);
+        linesDrawn++;
+        if (linesDrawn >= maxLines) return;
+        line = words[n] + ' ';
+        currentY += lineHeight;
+      } else {
+        line = testLine;
+      }
+    }
+    if (line.trim()) {
+      ctx.fillText(line.trim(), x, currentY);
+      linesDrawn++;
+      if (linesDrawn >= maxLines) return;
       currentY += lineHeight;
-    } else {
-      line = testLine;
     }
   }
-  ctx.fillText(line, x, currentY);
 }
 
 /**
- * Loads an image from a URI with CORS enabled.
+ * Loads an image from a URI with CORS enabled for remote endpoints.
  * @param {string} src
  * @returns {Promise<HTMLImageElement>}
  */
@@ -84,7 +96,9 @@ export function loadCanvasImage(src) {
   return new Promise((resolve, reject) => {
     if (!src) return reject(new Error('Image source is empty.'));
     const img = new Image();
-    img.crossOrigin = 'anonymous';
+    if (!src.startsWith('data:')) {
+      img.crossOrigin = 'anonymous';
+    }
     img.onload = () => resolve(img);
     img.onerror = () => reject(new Error('Failed to load canvas image.'));
     img.src = src;
