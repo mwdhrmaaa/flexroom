@@ -5,8 +5,8 @@
   "description": "Premium Gaming Achievements Showcase & Trophy Card Generator",
   "type": "module",
   "scripts": {
-    "test": "node --test tests/**/*.test.js",
-    "dev": "node -e \"const http=require('http'),fs=require('fs'),path=require('path');http.createServer((req,res)=>{let f=path.join(process.cwd(),req.url==='/'?'index.html':req.url);fs.readFile(f,(err,data)=>{if(err){res.writeHead(404);res.end('Not Found');}else{res.writeHead(200);res.end(data);}})}).listen(8080,()=>console.log('Flexroom dev running at http://localhost:8080'));\""
+    "test": "node --test tests/*.test.js",
+    "dev": "node -e \"const http=require('http'),fs=require('fs'),path=require('path');const m={'.html':'text/html','.js':'text/javascript','.css':'text/css','.svg':'image/svg+xml','.png':'image/png','.jpg':'image/jpeg'};http.createServer((req,res)=>{const f=path.join(process.cwd(),req.url==='/'?'index.html':req.url.split('?')[0]);fs.readFile(f,(err,d)=>{if(err){res.writeHead(404);res.end('Not Found');}else{res.writeHead(200,{'Content-Type':m[path.extname(f)]||'application/octet-stream'});res.end(d);}});}).listen(8080,()=>console.log('Flexroom dev running at http://localhost:8080'));\""
   },
   "keywords": [
     "gaming",
