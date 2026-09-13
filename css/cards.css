@@ -99,6 +99,11 @@
   box-shadow: 0 10px 30px rgba(213, 255, 64, 0.05);
 }
 
+.add-card:focus-visible {
+  outline: 2px solid var(--accent-lime);
+  outline-offset: 4px;
+}
+
 .plus-sign {
   font-size: 4.5rem;
   line-height: 1;

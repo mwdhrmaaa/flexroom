@@ -135,6 +135,11 @@
   background: rgba(213, 255, 64, 0.03);
 }
 
+.style-opt-btn:focus-visible {
+  outline: 2px solid var(--accent-lime);
+  outline-offset: 2px;
+}
+
 .style-opt-btn.active {
   background: var(--accent-lime);
   color: var(--bg-primary);

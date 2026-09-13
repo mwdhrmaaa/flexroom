@@ -1,4 +1,4 @@
-﻿:root {
+:root {
   --bg-primary: #0a0b0d;
   --bg-secondary: #131418;
   --text-primary: #ffffff;
@@ -93,6 +93,15 @@ h1, h2, h3, h4, h5, h6 {
   background: rgba(213, 255, 64, 0.08);
   box-shadow: 0 0 15px rgba(213, 255, 64, 0.2);
   transform: translateY(-2px);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--accent-lime);
+  outline-offset: 3px;
+}
+
+.btn:active {
+  transform: translateY(1px);
 }
 
 @keyframes fadeIn {
