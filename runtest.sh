@@ -9,7 +9,7 @@ echo "[*] Running Flexroom Automated Test Suite"
 echo "==================================================================="
 
 if command -v node >/dev/null 2>&1; then
-    node --test tests/**/*.test.js
+    node --test tests/*.test.js
     echo "[OK] All test suites passed successfully."
 else
     echo "[x] Node.js is required to execute the test runner."

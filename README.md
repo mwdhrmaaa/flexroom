@@ -28,7 +28,12 @@ flexroom/
 ├── package.json                # Project manifest and test runner commands
 ├── index.html                  # Semantic application markup
 ├── css/
-│   └── style.css               # Design system and layout styling
+│   ├── base.css                # Core design tokens, resets, and glass utilities
+│   ├── layout.css              # App shell, sticky header, and hero layout
+│   ├── cards.css               # Achievement card and dynamic grid styling
+│   ├── upload_modal.css        # Dropzone and upload modal styles
+│   ├── share_modal.css         # Flexcard preview and template switcher styles
+│   └── style.css               # Aggregator root stylesheet
 ├── src/
 │   ├── app.js                  # Modular entrypoint and DOM event wiring
 │   ├── core/
