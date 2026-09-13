@@ -1,0 +1,122 @@
+﻿:root {
+  --bg-primary: #0a0b0d;
+  --bg-secondary: #131418;
+  --text-primary: #ffffff;
+  --text-secondary: #c0c2b8;
+  --accent-cyan: #d5ff40;
+  --accent-purple: #b5e61d;
+  --accent-pink: #ff5555;
+  --accent-lime: #d5ff40;
+  
+  --glass-bg: rgba(19, 20, 24, 0.5);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+  
+  --font-heading: 'Poppins', sans-serif;
+  --font-body: 'Poppins', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  min-height: 100vh;
+  overflow-x: hidden;
+  background-image: 
+    radial-gradient(circle at 15% 50%, rgba(213, 255, 64, 0.04) 0%, transparent 50%),
+    radial-gradient(circle at 85% 30%, rgba(213, 255, 64, 0.03) 0%, transparent 50%);
+  background-attachment: fixed;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  box-shadow: var(--glass-shadow);
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, #ffffff 40%, var(--accent-lime));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: none;
+  font-size: 1rem;
+}
+
+.btn-primary {
+  background: var(--accent-lime);
+  color: var(--bg-primary);
+  box-shadow: 0 4px 15px rgba(213, 255, 64, 0.2);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(213, 255, 64, 0.35);
+  background: #e2ff6b;
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--accent-cyan);
+  border: 1px solid var(--accent-cyan);
+  box-shadow: 0 0 10px rgba(213, 255, 64, 0.05);
+}
+
+.btn-outline:hover {
+  background: rgba(213, 255, 64, 0.08);
+  box-shadow: 0 0 15px rgba(213, 255, 64, 0.2);
+  transform: translateY(-2px);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+.particles {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+  background-image: 
+    radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.05) 100%, transparent),
+    radial-gradient(1px 1px at 30% 40%, rgba(255,255,255,0.05) 100%, transparent),
+    radial-gradient(1px 1px at 50% 60%, rgba(255,255,255,0.05) 100%, transparent),
+    radial-gradient(2px 2px at 70% 80%, rgba(213, 255, 64, 0.1) 100%, transparent),
+    radial-gradient(2px 2px at 90% 10%, rgba(213, 255, 64, 0.1) 100%, transparent);
+  background-size: 100px 100px;
+}
