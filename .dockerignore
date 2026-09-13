@@ -1,0 +1,9 @@
+﻿.git
+.gitignore
+.dockerignore
+tests
+deploy.sh
+redeploy.sh
+runtest.sh
+*.log
+node_modules
