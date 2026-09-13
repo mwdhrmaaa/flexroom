@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {
   isValidAchievement,
   getAllAchievements,
+  getAchievementById,
   saveAchievement,
   deleteAchievementById
 } from '../src/core/storage/achievement_storage.js';
@@ -26,6 +27,8 @@ describe('AchievementStorage Module', () => {
   it('should validate achievement schemas correctly', () => {
     assert.strictEqual(isValidAchievement({ id: 1, game: 'Elden Ring', title: 'Lord' }), true);
     assert.strictEqual(isValidAchievement({ id: 'bad', game: 'Elden Ring', title: 'Lord' }), false);
+    assert.strictEqual(isValidAchievement({ id: 1, game: '   ', title: 'Lord' }), false);
+    assert.strictEqual(isValidAchievement({ id: 1, game: 'Elden Ring', title: '   ' }), false);
     assert.strictEqual(isValidAchievement(null), false);
     assert.strictEqual(isValidAchievement({}), false);
   });
@@ -54,6 +57,25 @@ describe('AchievementStorage Module', () => {
     assert.strictEqual(second.length, 2);
     assert.strictEqual(second[0].id, 102);
     assert.strictEqual(second[1].id, 101);
+  });
+
+  it('should throw error when saving payload with empty game or title', () => {
+    const storage = new MockStorage();
+    assert.throws(() => saveAchievement({ game: '', title: 'Title' }, storage), /Game title and achievement name cannot be empty/);
+    assert.throws(() => saveAchievement({ game: 'Game', title: '  ' }, storage), /Game title and achievement name cannot be empty/);
+    assert.throws(() => saveAchievement(null, storage), /Achievement payload must be a valid object/);
+  });
+
+  it('should retrieve single achievement by id using getAchievementById', () => {
+    const storage = new MockStorage();
+    saveAchievement({ id: 201, game: 'Cyberpunk 2077', title: 'Legend of the Afterlife' }, storage);
+    
+    const found = getAchievementById(201, storage);
+    assert.ok(found);
+    assert.strictEqual(found.title, 'Legend of the Afterlife');
+
+    const notFound = getAchievementById(999, storage);
+    assert.strictEqual(notFound, null);
   });
 
   it('should delete achievement by id', () => {

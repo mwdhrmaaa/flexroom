@@ -9,8 +9,11 @@ export function isValidAchievement(item) {
   if (!item || typeof item !== 'object') return false;
   return (
     typeof item.id === 'number' &&
+    !Number.isNaN(item.id) &&
     typeof item.game === 'string' &&
-    typeof item.title === 'string'
+    item.game.trim().length > 0 &&
+    typeof item.title === 'string' &&
+    item.title.trim().length > 0
   );
 }
 
@@ -34,18 +37,41 @@ export function getAllAchievements(storage = (typeof window !== 'undefined' ? wi
 }
 
 /**
+ * Retrieves a single achievement by ID.
+ * @param {number} id
+ * @param {Storage} [storage=window.localStorage]
+ * @returns {object|null}
+ */
+export function getAchievementById(id, storage = (typeof window !== 'undefined' ? window.localStorage : null)) {
+  const list = getAllAchievements(storage);
+  const numericId = Number(id);
+  return list.find((item) => item.id === numericId) || null;
+}
+
+/**
  * Saves a new achievement to the beginning of the list.
  * @param {object} payload
  * @param {Storage} [storage=window.localStorage]
  * @returns {Array<object>} Updated list
  */
 export function saveAchievement(payload, storage = (typeof window !== 'undefined' ? window.localStorage : null)) {
+  if (!payload || typeof payload !== 'object') {
+    throw new Error('Achievement payload must be a valid object.');
+  }
+
+  const trimmedGame = String(payload.game || '').trim();
+  const trimmedTitle = String(payload.title || '').trim();
+
+  if (!trimmedGame || !trimmedTitle) {
+    throw new Error('Game title and achievement name cannot be empty.');
+  }
+
   const current = getAllAchievements(storage);
   const newRecord = {
-    id: payload.id || Date.now(),
-    game: String(payload.game || '').trim(),
-    title: String(payload.title || '').trim(),
-    image: payload.image || '',
+    id: typeof payload.id === 'number' && !Number.isNaN(payload.id) ? payload.id : Date.now(),
+    game: trimmedGame,
+    title: trimmedTitle,
+    image: String(payload.image || '').trim(),
     description: String(payload.description || '').trim(),
     date: payload.date || new Date().toLocaleDateString('en-US', {
       year: 'numeric',
