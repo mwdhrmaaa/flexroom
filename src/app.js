@@ -17,6 +17,8 @@ document.addEventListener('DOMContentLoaded', () => {
     shareLoader: document.getElementById('shareLoader'),
     shareCardPreview: document.getElementById('shareCardPreview'),
     downloadShareCardBtn: document.getElementById('downloadShareCardBtn'),
+    copyShareCardBtn: document.getElementById('copyShareCardBtn'),
+    copyBtnText: document.getElementById('copyBtnText'),
     styleOptBtns: document.querySelectorAll('.style-opt-btn')
   });
 

@@ -12,11 +12,14 @@ export function initShareModal(elements) {
     shareLoader,
     shareCardPreview,
     downloadShareCardBtn,
+    copyShareCardBtn,
+    copyBtnText,
     styleOptBtns
   } = elements;
 
   let activeAchievement = null;
   let currentStyle = 'brutalist';
+  let latestDataUrl = '';
 
   const updateCard = () => {
     if (!activeAchievement) return;
@@ -26,8 +29,13 @@ export function initShareModal(elements) {
       downloadShareCardBtn.style.opacity = '0.5';
       downloadShareCardBtn.style.pointerEvents = 'none';
     }
+    if (copyShareCardBtn) {
+      copyShareCardBtn.style.opacity = '0.5';
+      copyShareCardBtn.style.pointerEvents = 'none';
+    }
 
     generateShareCard(activeAchievement, currentStyle, (dataUrl) => {
+      latestDataUrl = dataUrl;
       if (shareCardPreview) {
         shareCardPreview.src = dataUrl;
         shareCardPreview.style.display = 'flex';
@@ -40,6 +48,10 @@ export function initShareModal(elements) {
         downloadShareCardBtn.download = `flexcard-${slug}.png`;
         downloadShareCardBtn.style.opacity = '1';
         downloadShareCardBtn.style.pointerEvents = 'auto';
+      }
+      if (copyShareCardBtn) {
+        copyShareCardBtn.style.opacity = '1';
+        copyShareCardBtn.style.pointerEvents = 'auto';
       }
       if (shareLoader) shareLoader.style.display = 'none';
     });
@@ -91,6 +103,33 @@ export function initShareModal(elements) {
       close();
     }
   });
+
+  if (copyShareCardBtn) {
+    copyShareCardBtn.addEventListener('click', async () => {
+      if (!latestDataUrl) return;
+      try {
+        const res = await fetch(latestDataUrl);
+        const blob = await res.blob();
+        if (navigator.clipboard && window.ClipboardItem) {
+          await navigator.clipboard.write([
+            new ClipboardItem({ 'image/png': blob })
+          ]);
+          if (copyBtnText) copyBtnText.textContent = 'Copied!';
+          setTimeout(() => {
+            if (copyBtnText) copyBtnText.textContent = 'Copy Image';
+          }, 2000);
+        } else {
+          await navigator.clipboard.writeText(latestDataUrl);
+          if (copyBtnText) copyBtnText.textContent = 'Copied!';
+          setTimeout(() => {
+            if (copyBtnText) copyBtnText.textContent = 'Copy Image';
+          }, 2000);
+        }
+      } catch (err) {
+        console.warn('[ShareModal] Clipboard copy fallback:', err);
+      }
+    });
+  }
 
   return { open, close };
 }

@@ -1,4 +1,4 @@
-﻿/* Share / Flexcard Trophy Modal */
+/* Share / Flexcard Trophy Modal */
 .share-modal-content {
   max-width: 760px;
   width: 90%;
@@ -85,16 +85,18 @@
 
 .share-actions {
   display: flex;
-  justify-content: center;
+  gap: 12px;
   width: 100%;
 }
 
+.copy-btn,
 .download-btn {
-  width: 100%;
+  flex: 1;
   padding: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 0.95rem;
   text-decoration: none;
 }
 
