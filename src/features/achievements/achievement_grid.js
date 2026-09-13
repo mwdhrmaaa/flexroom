@@ -30,11 +30,13 @@ export function renderAchievementGrid(container, achievements, callbacks) {
   // Calculate & render empty slot cards
   const emptyCount = calculateEmptySlots(achievements.length);
   for (let i = 0; i < emptyCount; i++) {
+    const isFirstEmpty = achievements.length === 0 && i === 0;
     container.insertAdjacentHTML(
       'beforeend',
       `
       <div class="achievement-card glass add-card animate-fade-in open-modal-card" role="button" tabindex="0" aria-label="Add new achievement">
         <div class="plus-sign">+</div>
+        ${isFirstEmpty ? '<span class="add-card-label">Add your first achievement</span>' : ''}
       </div>
       `
     );

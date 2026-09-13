@@ -1,4 +1,4 @@
-﻿/* Achievements Grid & Cards */
+/* Achievements Grid & Cards */
 .achievements-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -81,8 +81,10 @@
 
 .add-card {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 12px;
   min-height: 345px;
   cursor: pointer;
   border: 2px dashed rgba(213, 255, 64, 0.2);
@@ -98,7 +100,8 @@
 }
 
 .plus-sign {
-  font-size: 5rem;
+  font-size: 4.5rem;
+  line-height: 1;
   color: var(--text-secondary);
   font-weight: 200;
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
@@ -107,6 +110,18 @@
 .add-card:hover .plus-sign {
   color: var(--accent-cyan);
   transform: scale(1.1) rotate(90deg);
+}
+
+.add-card-label {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  transition: color 0.3s ease;
+}
+
+.add-card:hover .add-card-label {
+  color: var(--accent-lime);
 }
 
 .card-content {
