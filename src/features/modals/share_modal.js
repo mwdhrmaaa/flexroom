@@ -86,5 +86,11 @@ export function initShareModal(elements) {
     if (e.target === shareModal) close();
   });
 
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && shareModal && shareModal.style.display !== 'none') {
+      close();
+    }
+  });
+
   return { open, close };
 }

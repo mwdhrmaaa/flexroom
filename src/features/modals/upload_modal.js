@@ -100,6 +100,11 @@ export function initUploadModal(elements, onSubmitCallback) {
   window.addEventListener('click', (e) => {
     if (e.target === modal) close();
   });
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal && modal.style.display !== 'none') {
+      close();
+    }
+  });
 
   // Form submission
   if (form) {
