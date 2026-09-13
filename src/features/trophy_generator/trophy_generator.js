@@ -24,6 +24,14 @@ const FRAME_BOUNDS = {
  * @returns {Promise<string>}
  */
 export async function generateShareCardDataUrl(achievement, styleName = 'brutalist') {
+  if (typeof document !== 'undefined' && document.fonts?.ready) {
+    try {
+      await document.fonts.ready;
+    } catch {
+      // Non-blocking fallback if font API encounters issue
+    }
+  }
+
   const { canvas, ctx } = createBaseCanvas(800, 1000);
   const renderer = TEMPLATE_REGISTRY[styleName] || TEMPLATE_REGISTRY.brutalist;
 
