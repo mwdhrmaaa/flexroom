@@ -44,6 +44,17 @@ export function renderCrimsonCard(ctx, ach, img, bounds) {
     ctx.drawImage(img, drawX, drawY, drawW, drawH);
     ctx.fillStyle = 'rgba(255, 30, 30, 0.05)';
     ctx.fillRect(drawX, drawY, drawW, drawH);
+  } else {
+    ctx.strokeStyle = 'rgba(255, 62, 62, 0.2)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.arc(drawX + drawW / 2, drawY + drawH / 2, 45, 0, Math.PI * 2);
+    ctx.stroke();
+
+    ctx.fillStyle = '#ff5c5c';
+    ctx.font = '600 13px "Poppins", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('COLLECTIBLE DATA RECORDED', drawX + drawW / 2, drawY + drawH / 2 + 5);
   }
 
   ctx.strokeStyle = 'rgba(255, 62, 62, 0.8)';

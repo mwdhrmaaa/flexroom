@@ -69,6 +69,15 @@ export function renderCyberCard(ctx, ach, img, bounds) {
 
   if (img) {
     ctx.drawImage(img, drawX, drawY, drawW, drawH);
+  } else {
+    ctx.strokeStyle = 'rgba(0, 224, 255, 0.2)';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(drawX + drawW / 2 - 140, drawY + drawH / 2 - 25, 280, 50);
+
+    ctx.fillStyle = '#00e0ff';
+    ctx.font = '700 12px "Courier New", monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('// TELEMETRY ACTIVE // NO_IMG //', drawX + drawW / 2, drawY + drawH / 2 + 5);
   }
 
   ctx.strokeStyle = '#00e0ff';

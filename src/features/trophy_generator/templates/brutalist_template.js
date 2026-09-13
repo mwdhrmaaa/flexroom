@@ -72,6 +72,20 @@ export function renderBrutalistCard(ctx, ach, img, bounds) {
 
   if (img) {
     ctx.drawImage(img, drawX, drawY, drawW, drawH);
+  } else {
+    ctx.strokeStyle = 'rgba(213, 255, 64, 0.15)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(drawX, drawY);
+    ctx.lineTo(drawX + drawW, drawY + drawH);
+    ctx.moveTo(drawX + drawW, drawY);
+    ctx.lineTo(drawX, drawY + drawH);
+    ctx.stroke();
+
+    ctx.fillStyle = '#d5ff40';
+    ctx.font = '700 13px "Courier New", monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('[ RECORDED ACHIEVEMENT // SCREENSHOT ARCHIVED ]', drawX + drawW / 2, drawY + drawH / 2);
   }
 
   ctx.strokeStyle = '#d5ff40';
